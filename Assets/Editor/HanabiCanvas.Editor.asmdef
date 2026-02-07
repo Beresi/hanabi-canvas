@@ -1,0 +1,18 @@
+{
+    "name": "HanabiCanvas.Editor",
+    "rootNamespace": "HanabiCanvas.Editor",
+    "references": [
+        "HanabiCanvas.Runtime"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
