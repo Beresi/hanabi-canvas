@@ -24,4 +24,4 @@ Built for game jam events.
 
 ## License
 
-Copyright (c) 2025 Itay Beresi. All rights reserved.
+Copyright (c) 2026 Itay Beresi. All rights reserved.
