@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5757c009bf5d184497475d7cc03b354, type: 3}
+  m_Name: Default Firework Config
+  m_EditorClassIdentifier: HanabiCanvas.Runtime::HanabiCanvas.Runtime.FireworkConfigSO
+  _phases:
+  - {fileID: 11400000, guid: d5c7578c36ee9d34b8e9a311596da276, type: 2}
+  - {fileID: 11400000, guid: 610f051a446e8df4b99fa4509b18fa3c, type: 2}
+  - {fileID: 11400000, guid: 2d1c9d31bb327f6418cf1fe7aae06fc5, type: 2}
+  - {fileID: 11400000, guid: 572ab04a50744434d98fd872535caad0, type: 2}
+  _burstRadius: 5
+  _steerStrength: 8
+  _steerCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _holdSparkleIntensity: 1
+  _fadeGravity: 2
+  _debrisParticleCount: 200
+  _debrisSpeedMultiplier: 1.5
+  _debrisColors:
+  - serializedVersion: 2
+    rgba: 4284795135
+  - serializedVersion: 2
+    rgba: 4281505535
+  - serializedVersion: 2
+    rgba: 4291362815
+  _particleSize: 0.1
+  _particleSizeFadeMultiplier: 0.5
+  _formationScale: 0.1

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f8cc4cbb01652242a8143bb5af8c25d, type: 3}
+  m_Name: Default Canvas Config
+  m_EditorClassIdentifier: HanabiCanvas.Runtime::HanabiCanvas.Runtime.CanvasConfigSO
+  _gridWidth: 32
+  _gridHeight: 32
+  _cellSize: 0.25
+  _defaultPalette: {fileID: 11400000, guid: 667416b6cec857e459b19e436db9ab40, type: 2}
