@@ -2,7 +2,8 @@
     "name": "HanabiCanvas.Editor",
     "rootNamespace": "HanabiCanvas.Editor",
     "references": [
-        "HanabiCanvas.Runtime"
+        "HanabiCanvas.Runtime",
+        "Unity.ugui"
     ],
     "includePlatforms": [
         "Editor"
