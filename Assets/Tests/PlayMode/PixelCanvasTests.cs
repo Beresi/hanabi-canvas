@@ -46,6 +46,7 @@ namespace HanabiCanvas.Tests.PlayMode
 #endif
 
             _canvasObject = new GameObject("TestPixelCanvas");
+            _canvasObject.SetActive(false);
             _canvas = _canvasObject.AddComponent<PixelCanvas>();
 
 #if UNITY_EDITOR
@@ -56,6 +57,8 @@ namespace HanabiCanvas.Tests.PlayMode
             canvasSO.FindProperty("_onLaunchFirework").objectReferenceValue = _onLaunchFirework;
             canvasSO.ApplyModifiedPropertiesWithoutUndo();
 #endif
+
+            _canvasObject.SetActive(true);
         }
 
         [TearDown]
@@ -323,15 +326,16 @@ namespace HanabiCanvas.Tests.PlayMode
         }
 
         [UnityTest]
-        public IEnumerator GridToWorld_CenterCell_ReturnsCanvasCenter()
+        public IEnumerator GridToWorld_CenterCell_ReturnsExpectedPosition()
         {
             yield return null;
 
             Vector3 worldPos = _canvas.GridToWorld(8, 8);
-            Vector3 canvasCenter = _canvasObject.transform.position;
 
-            Assert.AreEqual(canvasCenter.x, worldPos.x, 0.01f);
-            Assert.AreEqual(canvasCenter.y, worldPos.y, 0.01f);
+            // Cell (8,8) center = (8+0.5)*0.25 - 16*0.25/2 = 0.125
+            float expectedOffset = (8 + 0.5f) * _canvas.CellSize - _canvas.GridWidth * _canvas.CellSize * 0.5f;
+            Assert.AreEqual(expectedOffset, worldPos.x, 0.01f);
+            Assert.AreEqual(expectedOffset, worldPos.y, 0.01f);
         }
 
         [UnityTest]

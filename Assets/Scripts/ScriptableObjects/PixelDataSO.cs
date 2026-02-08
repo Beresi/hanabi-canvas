@@ -85,6 +85,11 @@ namespace HanabiCanvas.Runtime
             }
         }
 
+        public PixelEntry GetPixelAt(int index)
+        {
+            return _pixels[index];
+        }
+
         public string ToJson()
         {
             PixelDataJson wrapper = new PixelDataJson

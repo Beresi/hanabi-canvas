@@ -30,6 +30,10 @@ namespace HanabiCanvas.Runtime.UI
         [Tooltip("Color tint applied to unselected buttons")]
         [SerializeField] private Color _unselectedTint = new Color(0.6f, 0.6f, 0.6f, 1f);
 
+        [Tooltip("Scale multiplier applied to the selected color button")]
+        [Min(1f)]
+        [SerializeField] private float _selectedScale = 1.2f;
+
         // ---- Private Fields ----
         private Button[] _colorButtons;
         private int _selectedIndex;
@@ -128,7 +132,7 @@ namespace HanabiCanvas.Runtime.UI
                 RectTransform rectTransform = _colorButtons[i].GetComponent<RectTransform>();
                 if (rectTransform != null)
                 {
-                    float scale = (i == _selectedIndex) ? 1.2f : 1.0f;
+                    float scale = (i == _selectedIndex) ? _selectedScale : 1.0f;
                     rectTransform.localScale = new Vector3(scale, scale, 1f);
                 }
 

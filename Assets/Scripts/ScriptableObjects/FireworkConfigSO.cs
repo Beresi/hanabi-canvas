@@ -23,6 +23,10 @@ namespace HanabiCanvas.Runtime
         [Min(0.1f)]
         [SerializeField] private float _burstRadius = 5f;
 
+        [Tooltip("Velocity drag multiplier per frame during burst (0 = instant stop, 1 = no drag)")]
+        [Range(0f, 1f)]
+        [SerializeField] private float _burstDrag = 0.98f;
+
         [Header("Steer")]
         [Tooltip("How aggressively pattern particles seek their formation position")]
         [Range(0f, 20f)]
@@ -31,10 +35,18 @@ namespace HanabiCanvas.Runtime
         [Tooltip("Easing curve for steer convergence. X = phase progress, Y = steer influence")]
         [SerializeField] private AnimationCurve _steerCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
+        [Tooltip("Velocity drag multiplier per frame for debris during steer (0 = instant stop, 1 = no drag)")]
+        [Range(0f, 1f)]
+        [SerializeField] private float _steerDebrisDrag = 0.95f;
+
         [Header("Hold")]
         [Tooltip("Intensity of sparkle effect during hold phase")]
         [Range(0f, 5f)]
         [SerializeField] private float _holdSparkleIntensity = 1f;
+
+        [Tooltip("Scale of the jitter offset applied to pattern particles during hold")]
+        [Min(0f)]
+        [SerializeField] private float _holdJitterScale = 0.01f;
 
         [Header("Fade")]
         [Tooltip("Downward drift speed during fade phase")]
@@ -76,9 +88,12 @@ namespace HanabiCanvas.Runtime
         public FireworkPhaseSO[] Phases => _phases;
         public int PhaseCount => _phases != null ? _phases.Length : 0;
         public float BurstRadius => _burstRadius;
+        public float BurstDrag => _burstDrag;
         public float SteerStrength => _steerStrength;
         public AnimationCurve SteerCurve => _steerCurve;
+        public float SteerDebrisDrag => _steerDebrisDrag;
         public float HoldSparkleIntensity => _holdSparkleIntensity;
+        public float HoldJitterScale => _holdJitterScale;
         public float FadeGravity => _fadeGravity;
         public int DebrisParticleCount => _debrisParticleCount;
         public float DebrisSpeedMultiplier => _debrisSpeedMultiplier;
