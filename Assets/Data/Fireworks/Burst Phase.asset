@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Burst Phase
   m_EditorClassIdentifier: HanabiCanvas.Runtime::HanabiCanvas.Runtime.FireworkPhaseSO
   _phaseName: Burst
-  _duration: 0.15
+  _duration: 1
   _progressCurve:
     serializedVersion: 2
     m_Curve:

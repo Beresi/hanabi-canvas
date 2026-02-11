@@ -166,38 +166,63 @@ namespace HanabiCanvas.Tests.EditMode
 
         // ---- FireworkUpdater.UpdateBurst Tests ----
         [Test]
-        public void UpdateBurst_MovesParticleAlongVelocity()
+        public void UpdateBurst_DebrisParticle_MovesAlongVelocity()
         {
             ParticleData[] particles = new ParticleData[1];
             particles[0] = new ParticleData
             {
                 Position = Vector3.zero,
                 Velocity = new Vector3(10f, 0f, 0f),
+                IsPattern = false,
                 Life = 1f,
                 Size = 0.1f
             };
 
-            FireworkUpdater.UpdateBurst(particles, 1, 0.1f, 0.98f);
+            AnimationCurve curve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
+            FireworkUpdater.UpdateBurst(particles, 1, 0.1f, 0.98f, 8f, curve, 0f, 2f, 0.5f);
 
             Assert.Greater(particles[0].Position.x, 0f);
         }
 
         [Test]
-        public void UpdateBurst_AppliesDrag()
+        public void UpdateBurst_DebrisParticle_AppliesDrag()
         {
             ParticleData[] particles = new ParticleData[1];
             particles[0] = new ParticleData
             {
                 Position = Vector3.zero,
                 Velocity = new Vector3(10f, 0f, 0f),
+                IsPattern = false,
                 Life = 1f,
                 Size = 0.1f
             };
 
+            AnimationCurve curve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
             float initialSpeed = particles[0].Velocity.magnitude;
-            FireworkUpdater.UpdateBurst(particles, 1, 0.1f, 0.98f);
+            FireworkUpdater.UpdateBurst(particles, 1, 0.1f, 0.98f, 8f, curve, 0f, 2f, 0.5f);
 
             Assert.Less(particles[0].Velocity.magnitude, initialSpeed);
+        }
+
+        [Test]
+        public void UpdateBurst_PatternParticle_CurvesTowardTarget()
+        {
+            ParticleData[] particles = new ParticleData[1];
+            particles[0] = new ParticleData
+            {
+                Position = new Vector3(5f, 0f, 0f),
+                Velocity = new Vector3(10f, 0f, 0f),
+                FormationTarget = Vector3.zero,
+                IsPattern = true,
+                Life = 1f,
+                Size = 0.1f
+            };
+
+            AnimationCurve curve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
+            FireworkUpdater.UpdateBurst(particles, 1, 0.1f, 0.98f, 8f, curve, 0.5f, 2f, 0.5f);
+
+            Assert.Less(particles[0].Position.x, 5f + 10f * 0.1f,
+                "Pattern particle should curve toward formation target during burst");
         }
 
         // ---- FireworkUpdater.UpdateSteer Tests ----
@@ -217,7 +242,7 @@ namespace HanabiCanvas.Tests.EditMode
 
             AnimationCurve curve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
 
-            FireworkUpdater.UpdateSteer(particles, 1, 0.1f, 8f, curve, 0.5f, 0.95f);
+            FireworkUpdater.UpdateSteer(particles, 1, 0.1f, 8f, curve, 0.5f, 0.95f, 2f, 0.5f);
 
             Assert.Less(particles[0].Position.x, 5f,
                 "Pattern particle should move toward formation target");
@@ -239,7 +264,7 @@ namespace HanabiCanvas.Tests.EditMode
 
             AnimationCurve curve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
 
-            FireworkUpdater.UpdateSteer(particles, 1, 0.1f, 8f, curve, 1f, 0.95f);
+            FireworkUpdater.UpdateSteer(particles, 1, 0.1f, 8f, curve, 1f, 0.95f, 2f, 0.5f);
 
             Assert.Greater(particles[0].Position.x, 0f,
                 "Debris particle should continue moving in its velocity direction");
@@ -260,7 +285,7 @@ namespace HanabiCanvas.Tests.EditMode
 
             AnimationCurve curve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
 
-            FireworkUpdater.UpdateSteer(particles, 1, 0.1f, 8f, curve, 0.5f, 0.95f);
+            FireworkUpdater.UpdateSteer(particles, 1, 0.1f, 8f, curve, 0.5f, 0.95f, 2f, 0.5f);
 
             Assert.Less(particles[0].Life, 1f);
         }
@@ -281,7 +306,7 @@ namespace HanabiCanvas.Tests.EditMode
                 Size = 0.1f
             };
 
-            FireworkUpdater.UpdateHold(particles, 1, 0.1f, 1f, 0.01f, 0f);
+            FireworkUpdater.UpdateHold(particles, 1, 0.1f, 1f, 0.01f, 0f, 2f, 0.5f);
 
             float distance = Vector3.Distance(particles[0].Position, target);
             Assert.Less(distance, 0.1f, "Pattern particle should snap near formation target");
@@ -300,7 +325,7 @@ namespace HanabiCanvas.Tests.EditMode
                 Size = 0.1f
             };
 
-            FireworkUpdater.UpdateHold(particles, 1, 0.1f, 1f, 0.01f, 0f);
+            FireworkUpdater.UpdateHold(particles, 1, 0.1f, 1f, 0.01f, 0f, 2f, 0.5f);
 
             Assert.Less(particles[0].Life, 1f);
         }

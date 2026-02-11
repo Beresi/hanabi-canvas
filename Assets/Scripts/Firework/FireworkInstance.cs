@@ -68,16 +68,19 @@ namespace HanabiCanvas.Runtime.Firework
             {
                 case 0:
                     FireworkUpdater.UpdateBurst(_particles, _particleCount, Time.deltaTime,
-                        _config.BurstDrag);
+                        _config.BurstDrag, _config.SteerStrength, _config.SteerCurve,
+                        phaseProgress, _config.FadeGravity, _config.ParticleSizeFadeMultiplier);
                     break;
                 case 1:
                     FireworkUpdater.UpdateSteer(_particles, _particleCount, Time.deltaTime,
                         _config.SteerStrength, _config.SteerCurve, phaseProgress,
-                        _config.SteerDebrisDrag);
+                        _config.SteerDebrisDrag, _config.FadeGravity,
+                        _config.ParticleSizeFadeMultiplier);
                     break;
                 case 2:
                     FireworkUpdater.UpdateHold(_particles, _particleCount, Time.deltaTime,
-                        _config.HoldSparkleIntensity, _config.HoldJitterScale, Time.time);
+                        _config.HoldSparkleIntensity, _config.HoldJitterScale, Time.time,
+                        _config.FadeGravity, _config.ParticleSizeFadeMultiplier);
                     break;
                 case 3:
                     FireworkUpdater.UpdateFade(_particles, _particleCount, Time.deltaTime,

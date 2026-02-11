@@ -9,18 +9,39 @@ namespace HanabiCanvas.Runtime.Firework
     {
         // ---- Public Methods ----
         public static void UpdateBurst(ParticleData[] particles, int count, float deltaTime,
-            float burstDrag)
+            float burstDrag, float steerStrength, AnimationCurve steerCurve, float phaseProgress,
+            float debrisGravity, float debrisSizeFade)
         {
+            float steerInfluence = steerCurve.Evaluate(phaseProgress);
+
             for (int i = 0; i < count; i++)
             {
+                if (particles[i].IsPattern)
+                {
+                    Vector3 toTarget = particles[i].FormationTarget - particles[i].Position;
+                    Vector3 desiredVelocity = toTarget * steerStrength;
+                    particles[i].Velocity = Vector3.Lerp(
+                        particles[i].Velocity, desiredVelocity, steerInfluence);
+                }
+                else
+                {
+                    particles[i].Velocity *= burstDrag;
+                    particles[i].Velocity += Vector3.down * debrisGravity * deltaTime;
+                    particles[i].Life -= deltaTime;
+                    particles[i].Size *= 1f - debrisSizeFade * deltaTime;
+                    if (particles[i].Size < 0f)
+                    {
+                        particles[i].Size = 0f;
+                    }
+                }
+
                 particles[i].Position += particles[i].Velocity * deltaTime;
-                particles[i].Velocity *= burstDrag;
             }
         }
 
         public static void UpdateSteer(ParticleData[] particles, int count, float deltaTime,
             float steerStrength, AnimationCurve steerCurve, float phaseProgress,
-            float debrisDrag)
+            float debrisDrag, float debrisGravity, float debrisSizeFade)
         {
             float steerInfluence = steerCurve.Evaluate(phaseProgress);
 
@@ -36,7 +57,13 @@ namespace HanabiCanvas.Runtime.Firework
                 else
                 {
                     particles[i].Velocity *= debrisDrag;
+                    particles[i].Velocity += Vector3.down * debrisGravity * deltaTime;
                     particles[i].Life -= deltaTime;
+                    particles[i].Size *= 1f - debrisSizeFade * deltaTime;
+                    if (particles[i].Size < 0f)
+                    {
+                        particles[i].Size = 0f;
+                    }
                 }
 
                 particles[i].Position += particles[i].Velocity * deltaTime;
@@ -44,7 +71,8 @@ namespace HanabiCanvas.Runtime.Firework
         }
 
         public static void UpdateHold(ParticleData[] particles, int count, float deltaTime,
-            float sparkleIntensity, float jitterScale, float time)
+            float sparkleIntensity, float jitterScale, float time,
+            float debrisGravity, float debrisSizeFade)
         {
             for (int i = 0; i < count; i++)
             {
@@ -60,8 +88,10 @@ namespace HanabiCanvas.Runtime.Firework
                 }
                 else
                 {
+                    particles[i].Velocity += Vector3.down * debrisGravity * deltaTime;
+                    particles[i].Position += particles[i].Velocity * deltaTime;
                     particles[i].Life -= deltaTime;
-                    particles[i].Size *= 1f - deltaTime;
+                    particles[i].Size *= 1f - debrisSizeFade * deltaTime;
                     if (particles[i].Size < 0f)
                     {
                         particles[i].Size = 0f;
