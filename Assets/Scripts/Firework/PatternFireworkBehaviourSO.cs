@@ -6,13 +6,13 @@ using UnityEngine;
 namespace HanabiCanvas.Runtime.Firework
 {
     /// <summary>
-    /// Spark behaviour that forms the player's pixel-art pattern.
+    /// Firework behaviour that forms the player's pixel-art pattern.
     /// Particles converge from origin to target at a constant speed (closer = arrives sooner),
     /// hold briefly, then drift outward along their approach direction with gravity.
     /// Fade runs concurrently starting after a configurable delay past hold-end.
     /// </summary>
-    [CreateAssetMenu(fileName = "New Pattern Behaviour", menuName = "Hanabi Canvas/Spark Behaviours/Pattern")]
-    public class PatternSparkBehaviourSO : SparkBehaviourSO
+    [CreateAssetMenu(fileName = "New Pattern Behaviour", menuName = "Hanabi Canvas/Firework Behaviours/Pattern")]
+    public class PatternFireworkBehaviourSO : FireworkBehaviourSO
     {
         // ---- Constants ----
         private const float MIN_CONVERGE_SPEED = 0.1f;
@@ -124,18 +124,18 @@ namespace HanabiCanvas.Runtime.Firework
             _patternScale = Mathf.Max(_patternScale, MIN_PATTERN_SCALE);
         }
 
-        // ---- SparkBehaviourSO Implementation ----
+        // ---- FireworkBehaviourSO Implementation ----
 
         /// <inheritdoc/>
-        public override int GetParticleCount(SparkRequest request)
+        public override int GetParticleCount(FireworkRequest request)
         {
             return request.Pattern != null ? request.Pattern.Length : 0;
         }
 
         /// <inheritdoc/>
-        public override void InitializeParticles(SparkParticle[] particles, int count, SparkRequest request)
+        public override void InitializeParticles(FireworkParticle[] particles, int count, FireworkRequest request)
         {
-            // Center offset: same formula as FireworkInstance (Width / 2f)
+            // Center offset: Width / 2f to center the pattern at origin
             float halfWidth = request.PatternWidth / 2f;
             float halfHeight = request.PatternHeight / 2f;
 
@@ -191,7 +191,7 @@ namespace HanabiCanvas.Runtime.Firework
         }
 
         /// <inheritdoc/>
-        public override void UpdateParticles(SparkParticle[] particles, int count, float deltaTime)
+        public override void UpdateParticles(FireworkParticle[] particles, int count, float deltaTime)
         {
             if (count == 0)
             {
@@ -286,7 +286,7 @@ namespace HanabiCanvas.Runtime.Firework
         }
 
         /// <inheritdoc/>
-        public override bool IsComplete(SparkParticle[] particles, int count)
+        public override bool IsComplete(FireworkParticle[] particles, int count)
         {
             for (int i = 0; i < count; i++)
             {

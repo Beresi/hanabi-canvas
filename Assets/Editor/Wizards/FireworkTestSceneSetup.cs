@@ -10,14 +10,14 @@ using HanabiCanvas.Runtime.Firework;
 
 namespace HanabiCanvas.Editor
 {
-    public class SparkTestSceneSetup : EditorWindow
+    public class FireworkTestSceneSetup : EditorWindow
     {
         // ---- Constants ----
-        private const string SCENE_PATH = "Assets/Scenes/SparkTest.unity";
+        private const string SCENE_PATH = "Assets/Scenes/FireworkTest.unity";
         private const string BURST_BEHAVIOUR_PATH = "Assets/Data/Fireworks/Default Burst Behaviour.asset";
         private const string RING_BEHAVIOUR_PATH = "Assets/Data/Fireworks/Default Ring Behaviour.asset";
         private const string PATTERN_BEHAVIOUR_PATH = "Assets/Data/Fireworks/Default Pattern Behaviour.asset";
-        private const string SPARK_EVENT_PATH = "Assets/Data/Fireworks/On Spark Requested.asset";
+        private const string FIREWORK_EVENT_PATH = "Assets/Data/Fireworks/On Firework Requested.asset";
         private const string MATERIAL_PATH = "Assets/Art/Materials/FireworkParticle.mat";
         private const string SHADER_NAME = "HanabiCanvas/FireworkParticle";
         private const string TEST_HEART_PATH = "Assets/Data/Config/Test Heart.asset";
@@ -27,10 +27,10 @@ namespace HanabiCanvas.Editor
         private string _statusMessage = "";
 
         // ---- Menu Item ----
-        [MenuItem("Tools/Hanabi Canvas/Setup Spark Test Scene")]
+        [MenuItem("Tools/Hanabi Canvas/Setup Firework Test Scene")]
         private static void ShowWindow()
         {
-            SparkTestSceneSetup window = GetWindow<SparkTestSceneSetup>("Spark Test Scene");
+            FireworkTestSceneSetup window = GetWindow<FireworkTestSceneSetup>("Firework Test Scene");
             window.minSize = new Vector2(400, 250);
             window.Show();
         }
@@ -38,13 +38,13 @@ namespace HanabiCanvas.Editor
         // ---- Unity Methods ----
         private void OnGUI()
         {
-            EditorGUILayout.LabelField("Hanabi Canvas — Spark Test Scene", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("Hanabi Canvas — Firework Test Scene", EditorStyles.boldLabel);
             EditorGUILayout.Space(8);
             EditorGUILayout.HelpBox(
-                "Creates a minimal scene to test the spark system:\n" +
+                "Creates a minimal scene to test the firework system:\n" +
                 "• Camera aimed at spawn point\n" +
-                "• SparkManager with ring + pattern behaviours\n" +
-                "• SparkTestTrigger — press Space to burst",
+                "• FireworkManager with ring + pattern behaviours\n" +
+                "• FireworkTestTrigger — press Space to burst",
                 MessageType.Info);
             EditorGUILayout.Space(8);
 
@@ -69,28 +69,28 @@ namespace HanabiCanvas.Editor
             EnsureDirectory("Assets/Art/Materials");
 
             // Create SO assets if missing
-            if (AssetDatabase.LoadAssetAtPath<BurstSparkBehaviourSO>(BURST_BEHAVIOUR_PATH) == null)
+            if (AssetDatabase.LoadAssetAtPath<BurstFireworkBehaviourSO>(BURST_BEHAVIOUR_PATH) == null)
             {
-                BurstSparkBehaviourSO newBurst = ScriptableObject.CreateInstance<BurstSparkBehaviourSO>();
+                BurstFireworkBehaviourSO newBurst = ScriptableObject.CreateInstance<BurstFireworkBehaviourSO>();
                 AssetDatabase.CreateAsset(newBurst, BURST_BEHAVIOUR_PATH);
             }
 
-            if (AssetDatabase.LoadAssetAtPath<RingSparkBehaviourSO>(RING_BEHAVIOUR_PATH) == null)
+            if (AssetDatabase.LoadAssetAtPath<RingFireworkBehaviourSO>(RING_BEHAVIOUR_PATH) == null)
             {
-                RingSparkBehaviourSO newRing = ScriptableObject.CreateInstance<RingSparkBehaviourSO>();
+                RingFireworkBehaviourSO newRing = ScriptableObject.CreateInstance<RingFireworkBehaviourSO>();
                 AssetDatabase.CreateAsset(newRing, RING_BEHAVIOUR_PATH);
             }
 
-            if (AssetDatabase.LoadAssetAtPath<PatternSparkBehaviourSO>(PATTERN_BEHAVIOUR_PATH) == null)
+            if (AssetDatabase.LoadAssetAtPath<PatternFireworkBehaviourSO>(PATTERN_BEHAVIOUR_PATH) == null)
             {
-                PatternSparkBehaviourSO newPattern = ScriptableObject.CreateInstance<PatternSparkBehaviourSO>();
+                PatternFireworkBehaviourSO newPattern = ScriptableObject.CreateInstance<PatternFireworkBehaviourSO>();
                 AssetDatabase.CreateAsset(newPattern, PATTERN_BEHAVIOUR_PATH);
             }
 
-            if (AssetDatabase.LoadAssetAtPath<SparkRequestEventSO>(SPARK_EVENT_PATH) == null)
+            if (AssetDatabase.LoadAssetAtPath<FireworkRequestEventSO>(FIREWORK_EVENT_PATH) == null)
             {
-                SparkRequestEventSO newEvent = ScriptableObject.CreateInstance<SparkRequestEventSO>();
-                AssetDatabase.CreateAsset(newEvent, SPARK_EVENT_PATH);
+                FireworkRequestEventSO newEvent = ScriptableObject.CreateInstance<FireworkRequestEventSO>();
+                AssetDatabase.CreateAsset(newEvent, FIREWORK_EVENT_PATH);
             }
 
             // Create material if missing
@@ -118,12 +118,12 @@ namespace HanabiCanvas.Editor
             AssetDatabase.Refresh();
 
             // Reload all assets from disk to get proper persistent references
-            RingSparkBehaviourSO ringBehaviour =
-                AssetDatabase.LoadAssetAtPath<RingSparkBehaviourSO>(RING_BEHAVIOUR_PATH);
-            PatternSparkBehaviourSO patternBehaviour =
-                AssetDatabase.LoadAssetAtPath<PatternSparkBehaviourSO>(PATTERN_BEHAVIOUR_PATH);
-            SparkRequestEventSO sparkEvent =
-                AssetDatabase.LoadAssetAtPath<SparkRequestEventSO>(SPARK_EVENT_PATH);
+            RingFireworkBehaviourSO ringBehaviour =
+                AssetDatabase.LoadAssetAtPath<RingFireworkBehaviourSO>(RING_BEHAVIOUR_PATH);
+            PatternFireworkBehaviourSO patternBehaviour =
+                AssetDatabase.LoadAssetAtPath<PatternFireworkBehaviourSO>(PATTERN_BEHAVIOUR_PATH);
+            FireworkRequestEventSO fireworkEvent =
+                AssetDatabase.LoadAssetAtPath<FireworkRequestEventSO>(FIREWORK_EVENT_PATH);
             Material particleMaterial =
                 AssetDatabase.LoadAssetAtPath<Material>(MATERIAL_PATH);
             PixelDataSO heartData =
@@ -143,35 +143,35 @@ namespace HanabiCanvas.Editor
             cameraObj.transform.position = new Vector3(0f, 10f, -15f);
             cameraObj.transform.LookAt(new Vector3(0f, 10f, 0f));
 
-            // SparkManager
-            GameObject sparkManagerObj = new GameObject("SparkManager");
-            SparkManager sparkManager = sparkManagerObj.AddComponent<SparkManager>();
+            // FireworkManager
+            GameObject fireworkManagerObj = new GameObject("FireworkManager");
+            FireworkManager fireworkManager = fireworkManagerObj.AddComponent<FireworkManager>();
 
-            SerializedObject sparkManagerSO = new SerializedObject(sparkManager);
+            SerializedObject fireworkManagerSO = new SerializedObject(fireworkManager);
 
             // Wire behaviours array
-            SerializedProperty behavioursArray = sparkManagerSO.FindProperty("_behaviours");
+            SerializedProperty behavioursArray = fireworkManagerSO.FindProperty("_behaviours");
             behavioursArray.arraySize = 2;
             behavioursArray.GetArrayElementAtIndex(0).objectReferenceValue = ringBehaviour;
             behavioursArray.GetArrayElementAtIndex(1).objectReferenceValue = patternBehaviour;
 
-            sparkManagerSO.FindProperty("_onSparkRequested").objectReferenceValue = sparkEvent;
-            sparkManagerSO.FindProperty("_particleMaterial").objectReferenceValue = particleMaterial;
-            sparkManagerSO.ApplyModifiedPropertiesWithoutUndo();
+            fireworkManagerSO.FindProperty("_onFireworkRequested").objectReferenceValue = fireworkEvent;
+            fireworkManagerSO.FindProperty("_particleMaterial").objectReferenceValue = particleMaterial;
+            fireworkManagerSO.ApplyModifiedPropertiesWithoutUndo();
 
-            MeshRenderer meshRenderer = sparkManagerObj.GetComponent<MeshRenderer>();
+            MeshRenderer meshRenderer = fireworkManagerObj.GetComponent<MeshRenderer>();
             meshRenderer.sharedMaterial = particleMaterial;
 
-            // SparkTestTrigger
-            GameObject triggerObj = new GameObject("SparkTestTrigger");
+            // FireworkTestTrigger
+            GameObject triggerObj = new GameObject("FireworkTestTrigger");
 
             GameObject spawnPoint = new GameObject("SpawnPoint");
             spawnPoint.transform.SetParent(triggerObj.transform);
             spawnPoint.transform.localPosition = new Vector3(0f, 10f, 0f);
 
-            SparkTestTrigger trigger = triggerObj.AddComponent<SparkTestTrigger>();
+            FireworkTestTrigger trigger = triggerObj.AddComponent<FireworkTestTrigger>();
             SerializedObject triggerSO = new SerializedObject(trigger);
-            triggerSO.FindProperty("_onSparkRequested").objectReferenceValue = sparkEvent;
+            triggerSO.FindProperty("_onFireworkRequested").objectReferenceValue = fireworkEvent;
             triggerSO.FindProperty("_spawnPoint").objectReferenceValue = spawnPoint.transform;
             triggerSO.FindProperty("_pixelData").objectReferenceValue = heartData;
             triggerSO.ApplyModifiedPropertiesWithoutUndo();
@@ -180,8 +180,8 @@ namespace HanabiCanvas.Editor
             EditorSceneManager.SaveScene(newScene, SCENE_PATH);
             AssetDatabase.Refresh();
 
-            _statusMessage = "Test scene created at Assets/Scenes/SparkTest.unity. Press Play, then Space to launch!";
-            Debug.Log("[SparkTestSceneSetup] Scene created: " + SCENE_PATH);
+            _statusMessage = "Test scene created at Assets/Scenes/FireworkTest.unity. Press Play, then Space to launch!";
+            Debug.Log("[FireworkTestSceneSetup] Scene created: " + SCENE_PATH);
         }
 
         /// <summary>

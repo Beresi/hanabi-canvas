@@ -9,17 +9,17 @@ using HanabiCanvas.Runtime.Firework;
 
 namespace HanabiCanvas.Tests.EditMode
 {
-    public class RingSparkBehaviourTests
+    public class RingFireworkBehaviourTests
     {
         // ---- Private Fields ----
-        private RingSparkBehaviourSO _behaviour;
+        private RingFireworkBehaviourSO _behaviour;
 
         // ---- Setup / Teardown ----
 
         [SetUp]
         public void Setup()
         {
-            _behaviour = ScriptableObject.CreateInstance<RingSparkBehaviourSO>();
+            _behaviour = ScriptableObject.CreateInstance<RingFireworkBehaviourSO>();
 
             SerializedObject so = new SerializedObject(_behaviour);
             so.FindProperty("_particleCount").intValue = 100;
@@ -49,7 +49,7 @@ namespace HanabiCanvas.Tests.EditMode
 
         // ---- Helper Methods ----
 
-        private SparkRequest CreateTestRequest(int pixelCount)
+        private FireworkRequest CreateTestRequest(int pixelCount)
         {
             PixelEntry[] pattern = new PixelEntry[pixelCount];
             Color32 red = new Color32(255, 0, 0, 255);
@@ -58,7 +58,7 @@ namespace HanabiCanvas.Tests.EditMode
                 pattern[i] = new PixelEntry((byte)i, 0, red);
             }
 
-            return new SparkRequest
+            return new FireworkRequest
             {
                 Position = new Vector3(0f, 10f, 0f),
                 Pattern = pattern,
@@ -72,7 +72,7 @@ namespace HanabiCanvas.Tests.EditMode
         [Test]
         public void GetParticleCount_ReturnsConfiguredCount()
         {
-            SparkRequest request = CreateTestRequest(5);
+            FireworkRequest request = CreateTestRequest(5);
 
             Assert.AreEqual(100, _behaviour.GetParticleCount(request));
         }
@@ -82,9 +82,9 @@ namespace HanabiCanvas.Tests.EditMode
         [Test]
         public void InitializeParticles_StartsAtOrigin()
         {
-            SparkRequest request = CreateTestRequest(5);
+            FireworkRequest request = CreateTestRequest(5);
             int count = _behaviour.GetParticleCount(request);
-            SparkParticle[] particles = new SparkParticle[count];
+            FireworkParticle[] particles = new FireworkParticle[count];
 
             _behaviour.InitializeParticles(particles, count, request);
 
@@ -98,9 +98,9 @@ namespace HanabiCanvas.Tests.EditMode
         [Test]
         public void InitializeParticles_VelocityIsRadialXY()
         {
-            SparkRequest request = CreateTestRequest(5);
+            FireworkRequest request = CreateTestRequest(5);
             int count = _behaviour.GetParticleCount(request);
-            SparkParticle[] particles = new SparkParticle[count];
+            FireworkParticle[] particles = new FireworkParticle[count];
 
             _behaviour.InitializeParticles(particles, count, request);
 
@@ -127,9 +127,9 @@ namespace HanabiCanvas.Tests.EditMode
         [Test]
         public void InitializeParticles_WithPattern_UsesPatternColors()
         {
-            SparkRequest request = CreateTestRequest(10);
+            FireworkRequest request = CreateTestRequest(10);
             int count = _behaviour.GetParticleCount(request);
-            SparkParticle[] particles = new SparkParticle[count];
+            FireworkParticle[] particles = new FireworkParticle[count];
 
             _behaviour.InitializeParticles(particles, count, request);
 
@@ -143,7 +143,7 @@ namespace HanabiCanvas.Tests.EditMode
         [Test]
         public void InitializeParticles_NoPattern_UsesWhite()
         {
-            SparkRequest request = new SparkRequest
+            FireworkRequest request = new FireworkRequest
             {
                 Position = new Vector3(0f, 10f, 0f),
                 Pattern = null,
@@ -151,7 +151,7 @@ namespace HanabiCanvas.Tests.EditMode
                 PatternHeight = 32
             };
             int count = _behaviour.GetParticleCount(request);
-            SparkParticle[] particles = new SparkParticle[count];
+            FireworkParticle[] particles = new FireworkParticle[count];
 
             _behaviour.InitializeParticles(particles, count, request);
 
@@ -166,8 +166,8 @@ namespace HanabiCanvas.Tests.EditMode
         public void InitializeParticles_AutoRadius_UsesPatternExtent()
         {
             // Create a separate SO with auto-radius enabled
-            RingSparkBehaviourSO autoRadiusBehaviour =
-                ScriptableObject.CreateInstance<RingSparkBehaviourSO>();
+            RingFireworkBehaviourSO autoRadiusBehaviour =
+                ScriptableObject.CreateInstance<RingFireworkBehaviourSO>();
 
             SerializedObject so = new SerializedObject(autoRadiusBehaviour);
             so.FindProperty("_particleCount").intValue = 100;
@@ -193,7 +193,7 @@ namespace HanabiCanvas.Tests.EditMode
             {
                 new PixelEntry(31, 16, new Color32(255, 0, 0, 255))
             };
-            SparkRequest request = new SparkRequest
+            FireworkRequest request = new FireworkRequest
             {
                 Position = new Vector3(0f, 10f, 0f),
                 Pattern = pattern,
@@ -202,7 +202,7 @@ namespace HanabiCanvas.Tests.EditMode
             };
 
             int count = autoRadiusBehaviour.GetParticleCount(request);
-            SparkParticle[] particles = new SparkParticle[count];
+            FireworkParticle[] particles = new FireworkParticle[count];
 
             autoRadiusBehaviour.InitializeParticles(particles, count, request);
 
@@ -226,8 +226,8 @@ namespace HanabiCanvas.Tests.EditMode
         [Test]
         public void UpdateParticles_AppliesGravity()
         {
-            SparkParticle[] particles = new SparkParticle[1];
-            particles[0] = new SparkParticle
+            FireworkParticle[] particles = new FireworkParticle[1];
+            particles[0] = new FireworkParticle
             {
                 Position = new Vector3(0f, 10f, 0f),
                 Velocity = new Vector3(1f, 0f, 0f),
@@ -248,8 +248,8 @@ namespace HanabiCanvas.Tests.EditMode
         [Test]
         public void UpdateParticles_DeadParticle_IsSkipped()
         {
-            SparkParticle[] particles = new SparkParticle[1];
-            particles[0] = new SparkParticle
+            FireworkParticle[] particles = new FireworkParticle[1];
+            particles[0] = new FireworkParticle
             {
                 Position = new Vector3(5f, 5f, 5f),
                 Velocity = new Vector3(10f, 0f, 0f),
@@ -270,7 +270,7 @@ namespace HanabiCanvas.Tests.EditMode
         [Test]
         public void IsComplete_AllDead_ReturnsTrue()
         {
-            SparkParticle[] particles = new SparkParticle[3];
+            FireworkParticle[] particles = new FireworkParticle[3];
             // All default with Life = 0
 
             Assert.IsTrue(_behaviour.IsComplete(particles, 3));
@@ -279,7 +279,7 @@ namespace HanabiCanvas.Tests.EditMode
         [Test]
         public void IsComplete_SomeAlive_ReturnsFalse()
         {
-            SparkParticle[] particles = new SparkParticle[3];
+            FireworkParticle[] particles = new FireworkParticle[3];
             particles[1].Life = 0.5f;
 
             Assert.IsFalse(_behaviour.IsComplete(particles, 3));
@@ -290,8 +290,8 @@ namespace HanabiCanvas.Tests.EditMode
         [Test]
         public void OnValidate_ParticleCountBelowMin_ClampedToMin()
         {
-            RingSparkBehaviourSO testBehaviour =
-                ScriptableObject.CreateInstance<RingSparkBehaviourSO>();
+            RingFireworkBehaviourSO testBehaviour =
+                ScriptableObject.CreateInstance<RingFireworkBehaviourSO>();
 
             SerializedObject so = new SerializedObject(testBehaviour);
             so.FindProperty("_particleCount").intValue = 0;
@@ -305,8 +305,8 @@ namespace HanabiCanvas.Tests.EditMode
         [Test]
         public void OnValidate_RingRadiusBelowMin_ClampedToMin()
         {
-            RingSparkBehaviourSO testBehaviour =
-                ScriptableObject.CreateInstance<RingSparkBehaviourSO>();
+            RingFireworkBehaviourSO testBehaviour =
+                ScriptableObject.CreateInstance<RingFireworkBehaviourSO>();
 
             SerializedObject so = new SerializedObject(testBehaviour);
             so.FindProperty("_ringRadius").floatValue = 0f;

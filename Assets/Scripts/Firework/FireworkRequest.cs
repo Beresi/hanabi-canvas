@@ -6,10 +6,10 @@ using UnityEngine;
 namespace HanabiCanvas.Runtime.Firework
 {
     /// <summary>
-    /// Payload struct describing a request to spawn spark bursts at a given position
+    /// Payload struct describing a request to spawn firework bursts at a given position
     /// with pattern data and colors from the player's pixel-art drawing.
     /// </summary>
-    public struct SparkRequest
+    public struct FireworkRequest
     {
         /// <summary>World-space origin of the burst.</summary>
         public Vector3 Position;

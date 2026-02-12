@@ -6,11 +6,11 @@ using UnityEngine;
 namespace HanabiCanvas.Runtime.Firework
 {
     /// <summary>
-    /// Concrete spark behaviour that produces a spherical burst of particles
+    /// Concrete firework behaviour that produces a spherical burst of particles
     /// with gravity, drag, and size/alpha curves over lifetime.
     /// </summary>
-    [CreateAssetMenu(fileName = "New Burst Behaviour", menuName = "Hanabi Canvas/Spark Behaviours/Burst")]
-    public class BurstSparkBehaviourSO : SparkBehaviourSO
+    [CreateAssetMenu(fileName = "New Burst Behaviour", menuName = "Hanabi Canvas/Firework Behaviours/Burst")]
+    public class BurstFireworkBehaviourSO : FireworkBehaviourSO
     {
         // ---- Constants ----
         private const int MIN_PARTICLE_COUNT = 1;
@@ -114,16 +114,16 @@ namespace HanabiCanvas.Runtime.Firework
             _lifetime = Mathf.Max(_lifetime, MIN_LIFETIME);
         }
 
-        // ---- SparkBehaviourSO Implementation ----
+        // ---- FireworkBehaviourSO Implementation ----
 
         /// <inheritdoc/>
-        public override int GetParticleCount(SparkRequest request)
+        public override int GetParticleCount(FireworkRequest request)
         {
             return _particleCount;
         }
 
         /// <inheritdoc/>
-        public override void InitializeParticles(SparkParticle[] particles, int count, SparkRequest request)
+        public override void InitializeParticles(FireworkParticle[] particles, int count, FireworkRequest request)
         {
             // Build weighted color table from pattern
             bool hasPattern = request.Pattern != null && request.Pattern.Length > 0;
@@ -207,7 +207,7 @@ namespace HanabiCanvas.Runtime.Firework
         }
 
         /// <inheritdoc/>
-        public override void UpdateParticles(SparkParticle[] particles, int count, float deltaTime)
+        public override void UpdateParticles(FireworkParticle[] particles, int count, float deltaTime)
         {
             for (int i = 0; i < count; i++)
             {
@@ -247,7 +247,7 @@ namespace HanabiCanvas.Runtime.Firework
         }
 
         /// <inheritdoc/>
-        public override bool IsComplete(SparkParticle[] particles, int count)
+        public override bool IsComplete(FireworkParticle[] particles, int count)
         {
             for (int i = 0; i < count; i++)
             {

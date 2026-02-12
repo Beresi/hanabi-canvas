@@ -13,15 +13,15 @@ MonoBehaviour:
   m_Name: Default Ring Behaviour
   m_EditorClassIdentifier: HanabiCanvas.Runtime::HanabiCanvas.Runtime.Firework.RingSparkBehaviourSO
   _particleCount: 1641
-  _ringRadius: 36.3
-  _ringRadiusVariance: 0.908
+  _ringRadius: 93.7
+  _ringRadiusVariance: 0
   _burstSpeed: 8
-  _burstSpeedVariance: 0.596
-  _gravity: 4
+  _burstSpeedVariance: 0.513
+  _gravity: 8
   _drag: 0.995
   _lifetime: 2
   _lifetimeVariance: 0.2
-  _particleSize: 0.15
+  _particleSize: 0.3
   _sizeOverLife:
     serializedVersion: 2
     m_Curve:
@@ -106,5 +106,5 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _isAutoRadiusFromPattern: 1
-  _patternScaleHint: 0.1
+  _isAutoRadiusFromPattern: 0
+  _patternScaleHint: 2.55

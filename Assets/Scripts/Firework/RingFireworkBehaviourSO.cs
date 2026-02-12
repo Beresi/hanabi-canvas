@@ -6,13 +6,13 @@ using UnityEngine;
 namespace HanabiCanvas.Runtime.Firework
 {
     /// <summary>
-    /// Concrete spark behaviour that distributes particles in a ring (XY plane)
+    /// Concrete firework behaviour that distributes particles in a ring (XY plane)
     /// around the pattern origin, with gravity, drag, and size/alpha curves
-    /// over lifetime. Unlike BurstSparkBehaviourSO which uses a sphere,
+    /// over lifetime. Unlike BurstFireworkBehaviourSO which uses a sphere,
     /// this behaviour constrains initial positions and velocities to the XY plane.
     /// </summary>
-    [CreateAssetMenu(fileName = "New Ring Behaviour", menuName = "Hanabi Canvas/Spark Behaviours/Ring")]
-    public class RingSparkBehaviourSO : SparkBehaviourSO
+    [CreateAssetMenu(fileName = "New Ring Behaviour", menuName = "Hanabi Canvas/Firework Behaviours/Ring")]
+    public class RingFireworkBehaviourSO : FireworkBehaviourSO
     {
         // ---- Constants ----
         private const int MIN_PARTICLE_COUNT = 1;
@@ -81,7 +81,7 @@ namespace HanabiCanvas.Runtime.Firework
         [SerializeField] private bool _isAutoRadiusFromPattern = true;
 
         [Tooltip("World units per pixel, used when computing auto-radius. " +
-                 "Should match PatternSparkBehaviourSO's _patternScale so the ring aligns.")]
+                 "Should match PatternFireworkBehaviourSO's _patternScale so the ring aligns.")]
         [Min(MIN_PATTERN_SCALE_HINT)]
         [SerializeField] private float _patternScaleHint = 0.3f;
 
@@ -141,16 +141,16 @@ namespace HanabiCanvas.Runtime.Firework
             _patternScaleHint = Mathf.Max(_patternScaleHint, MIN_PATTERN_SCALE_HINT);
         }
 
-        // ---- SparkBehaviourSO Implementation ----
+        // ---- FireworkBehaviourSO Implementation ----
 
         /// <inheritdoc/>
-        public override int GetParticleCount(SparkRequest request)
+        public override int GetParticleCount(FireworkRequest request)
         {
             return _particleCount;
         }
 
         /// <inheritdoc/>
-        public override void InitializeParticles(SparkParticle[] particles, int count, SparkRequest request)
+        public override void InitializeParticles(FireworkParticle[] particles, int count, FireworkRequest request)
         {
             // Build weighted color table from pattern
             bool hasPattern = request.Pattern != null && request.Pattern.Length > 0;
@@ -203,7 +203,7 @@ namespace HanabiCanvas.Runtime.Firework
         }
 
         /// <inheritdoc/>
-        public override void UpdateParticles(SparkParticle[] particles, int count, float deltaTime)
+        public override void UpdateParticles(FireworkParticle[] particles, int count, float deltaTime)
         {
             for (int i = 0; i < count; i++)
             {
@@ -243,7 +243,7 @@ namespace HanabiCanvas.Runtime.Firework
         }
 
         /// <inheritdoc/>
-        public override bool IsComplete(SparkParticle[] particles, int count)
+        public override bool IsComplete(FireworkParticle[] particles, int count)
         {
             for (int i = 0; i < count; i++)
             {

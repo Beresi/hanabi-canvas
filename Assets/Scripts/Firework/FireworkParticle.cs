@@ -6,10 +6,10 @@ using UnityEngine;
 namespace HanabiCanvas.Runtime.Firework
 {
     /// <summary>
-    /// Minimal mutable value type holding the runtime state of a single spark particle.
-    /// Public fields for direct mutation without copy overhead (same pattern as ParticleData).
+    /// Minimal mutable value type holding the runtime state of a single firework particle.
+    /// Public fields for direct mutation without copy overhead (mutable value type).
     /// </summary>
-    public struct SparkParticle
+    public struct FireworkParticle
     {
         /// <summary>World position of the particle.</summary>
         public Vector3 Position;

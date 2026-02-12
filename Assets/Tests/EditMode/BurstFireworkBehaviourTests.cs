@@ -9,16 +9,16 @@ using HanabiCanvas.Runtime.Firework;
 
 namespace HanabiCanvas.Tests.EditMode
 {
-    public class SparkTests
+    public class BurstFireworkBehaviourTests
     {
         // ---- Private Fields ----
-        private BurstSparkBehaviourSO _behaviour;
+        private BurstFireworkBehaviourSO _behaviour;
 
         // ---- Setup / Teardown ----
         [SetUp]
         public void Setup()
         {
-            _behaviour = ScriptableObject.CreateInstance<BurstSparkBehaviourSO>();
+            _behaviour = ScriptableObject.CreateInstance<BurstFireworkBehaviourSO>();
 
             SerializedObject behaviourSO = new SerializedObject(_behaviour);
             behaviourSO.FindProperty("_particleCount").intValue = 50;
@@ -43,9 +43,9 @@ namespace HanabiCanvas.Tests.EditMode
         }
 
         // ---- Helper Methods ----
-        private SparkParticle CreateAliveParticle(Vector3 position, Vector3 velocity, float life = 1f)
+        private FireworkParticle CreateAliveParticle(Vector3 position, Vector3 velocity, float life = 1f)
         {
-            return new SparkParticle
+            return new FireworkParticle
             {
                 Position = position,
                 Velocity = velocity,
@@ -56,11 +56,11 @@ namespace HanabiCanvas.Tests.EditMode
             };
         }
 
-        // ---- SparkParticle Tests ----
+        // ---- FireworkParticle Tests ----
         [Test]
-        public void SparkParticle_Default_HasZeroValues()
+        public void FireworkParticle_Default_HasZeroValues()
         {
-            SparkParticle particle = new SparkParticle();
+            FireworkParticle particle = new FireworkParticle();
 
             Assert.AreEqual(Vector3.zero, particle.Position);
             Assert.AreEqual(Vector3.zero, particle.Velocity);
@@ -69,11 +69,11 @@ namespace HanabiCanvas.Tests.EditMode
             Assert.AreEqual(0f, particle.MaxLife);
         }
 
-        // ---- BurstSparkBehaviourSO Validation Tests ----
+        // ---- BurstFireworkBehaviourSO Validation Tests ----
         [Test]
         public void OnValidate_ParticleCountBelowMin_ClampedToMin()
         {
-            BurstSparkBehaviourSO testBehaviour = ScriptableObject.CreateInstance<BurstSparkBehaviourSO>();
+            BurstFireworkBehaviourSO testBehaviour = ScriptableObject.CreateInstance<BurstFireworkBehaviourSO>();
 
             SerializedObject so = new SerializedObject(testBehaviour);
             so.FindProperty("_particleCount").intValue = 0;
@@ -87,7 +87,7 @@ namespace HanabiCanvas.Tests.EditMode
         [Test]
         public void OnValidate_BurstSpeedBelowMin_ClampedToMin()
         {
-            BurstSparkBehaviourSO testBehaviour = ScriptableObject.CreateInstance<BurstSparkBehaviourSO>();
+            BurstFireworkBehaviourSO testBehaviour = ScriptableObject.CreateInstance<BurstFireworkBehaviourSO>();
 
             SerializedObject so = new SerializedObject(testBehaviour);
             so.FindProperty("_burstSpeed").floatValue = 0f;
@@ -101,7 +101,7 @@ namespace HanabiCanvas.Tests.EditMode
         [Test]
         public void OnValidate_LifetimeBelowMin_ClampedToMin()
         {
-            BurstSparkBehaviourSO testBehaviour = ScriptableObject.CreateInstance<BurstSparkBehaviourSO>();
+            BurstFireworkBehaviourSO testBehaviour = ScriptableObject.CreateInstance<BurstFireworkBehaviourSO>();
 
             SerializedObject so = new SerializedObject(testBehaviour);
             so.FindProperty("_lifetime").floatValue = 0f;
@@ -115,7 +115,7 @@ namespace HanabiCanvas.Tests.EditMode
         [Test]
         public void OnValidate_ParticleSizeBelowMin_ClampedToMin()
         {
-            BurstSparkBehaviourSO testBehaviour = ScriptableObject.CreateInstance<BurstSparkBehaviourSO>();
+            BurstFireworkBehaviourSO testBehaviour = ScriptableObject.CreateInstance<BurstFireworkBehaviourSO>();
 
             SerializedObject so = new SerializedObject(testBehaviour);
             so.FindProperty("_particleSize").floatValue = -1f;
@@ -126,12 +126,12 @@ namespace HanabiCanvas.Tests.EditMode
             Object.DestroyImmediate(testBehaviour);
         }
 
-        // ---- BurstSparkBehaviourSO UpdateParticles Tests ----
+        // ---- BurstFireworkBehaviourSO UpdateParticles Tests ----
         [Test]
         public void UpdateParticles_DeadParticle_IsSkipped()
         {
-            SparkParticle[] particles = new SparkParticle[1];
-            particles[0] = new SparkParticle
+            FireworkParticle[] particles = new FireworkParticle[1];
+            particles[0] = new FireworkParticle
             {
                 Position = Vector3.zero,
                 Velocity = new Vector3(10f, 0f, 0f),
@@ -150,7 +150,7 @@ namespace HanabiCanvas.Tests.EditMode
         [Test]
         public void UpdateParticles_Gravity_PullsVelocityDown()
         {
-            SparkParticle[] particles = new SparkParticle[1];
+            FireworkParticle[] particles = new FireworkParticle[1];
             particles[0] = CreateAliveParticle(new Vector3(0f, 10f, 0f), Vector3.zero);
 
             _behaviour.UpdateParticles(particles, 1, 0.1f);
@@ -162,7 +162,7 @@ namespace HanabiCanvas.Tests.EditMode
         [Test]
         public void UpdateParticles_Drag_ReducesSpeed()
         {
-            SparkParticle[] particles = new SparkParticle[1];
+            FireworkParticle[] particles = new FireworkParticle[1];
             particles[0] = CreateAliveParticle(Vector3.zero, new Vector3(10f, 0f, 0f));
 
             float initialMagnitude = particles[0].Velocity.magnitude;
@@ -176,7 +176,7 @@ namespace HanabiCanvas.Tests.EditMode
         [Test]
         public void UpdateParticles_PositionIntegration_MovesParticle()
         {
-            SparkParticle[] particles = new SparkParticle[1];
+            FireworkParticle[] particles = new FireworkParticle[1];
             particles[0] = CreateAliveParticle(Vector3.zero, new Vector3(10f, 0f, 0f));
 
             _behaviour.UpdateParticles(particles, 1, 0.1f);
@@ -188,7 +188,7 @@ namespace HanabiCanvas.Tests.EditMode
         [Test]
         public void UpdateParticles_LifeDecay_ReducesLife()
         {
-            SparkParticle[] particles = new SparkParticle[1];
+            FireworkParticle[] particles = new FireworkParticle[1];
             particles[0] = CreateAliveParticle(Vector3.zero, Vector3.zero);
 
             _behaviour.UpdateParticles(particles, 1, 0.1f);
@@ -200,7 +200,7 @@ namespace HanabiCanvas.Tests.EditMode
         [Test]
         public void UpdateParticles_LifeDecay_ClampsToZero()
         {
-            SparkParticle[] particles = new SparkParticle[1];
+            FireworkParticle[] particles = new FireworkParticle[1];
             particles[0] = CreateAliveParticle(Vector3.zero, Vector3.zero, 0.05f);
 
             _behaviour.UpdateParticles(particles, 1, 0.1f);
@@ -212,8 +212,8 @@ namespace HanabiCanvas.Tests.EditMode
         [Test]
         public void UpdateParticles_SizeOverLife_ScalesSizeByProgress()
         {
-            SparkParticle[] particles = new SparkParticle[1];
-            particles[0] = new SparkParticle
+            FireworkParticle[] particles = new FireworkParticle[1];
+            particles[0] = new FireworkParticle
             {
                 Position = Vector3.zero,
                 Velocity = Vector3.zero,
@@ -234,8 +234,8 @@ namespace HanabiCanvas.Tests.EditMode
         [Test]
         public void UpdateParticles_AlphaOverLife_FadesAlpha()
         {
-            SparkParticle[] particles = new SparkParticle[1];
-            particles[0] = new SparkParticle
+            FireworkParticle[] particles = new FireworkParticle[1];
+            particles[0] = new FireworkParticle
             {
                 Position = Vector3.zero,
                 Velocity = Vector3.zero,
@@ -254,11 +254,11 @@ namespace HanabiCanvas.Tests.EditMode
                 "Alpha should match alphaOverLife curve value at progress 0.5");
         }
 
-        // ---- BurstSparkBehaviourSO GetParticleCount / IsComplete Tests ----
+        // ---- BurstFireworkBehaviourSO GetParticleCount / IsComplete Tests ----
         [Test]
         public void GetParticleCount_ReturnsConfiguredCount()
         {
-            SparkRequest request = new SparkRequest
+            FireworkRequest request = new FireworkRequest
             {
                 Position = Vector3.zero,
                 Pattern = new[] { new PixelEntry(0, 0, new Color32(255, 0, 0, 255)) }
@@ -270,7 +270,7 @@ namespace HanabiCanvas.Tests.EditMode
         [Test]
         public void IsComplete_AllDead_ReturnsTrue()
         {
-            SparkParticle[] particles = new SparkParticle[3];
+            FireworkParticle[] particles = new FireworkParticle[3];
             // All default with Life = 0
 
             Assert.IsTrue(_behaviour.IsComplete(particles, 3));
@@ -279,7 +279,7 @@ namespace HanabiCanvas.Tests.EditMode
         [Test]
         public void IsComplete_SomeAlive_ReturnsFalse()
         {
-            SparkParticle[] particles = new SparkParticle[3];
+            FireworkParticle[] particles = new FireworkParticle[3];
             particles[1].Life = 0.5f;
 
             Assert.IsFalse(_behaviour.IsComplete(particles, 3));
@@ -288,13 +288,13 @@ namespace HanabiCanvas.Tests.EditMode
         [Test]
         public void InitializeParticles_SetsPositionAndLife()
         {
-            SparkParticle[] particles = new SparkParticle[5];
+            FireworkParticle[] particles = new FireworkParticle[5];
             PixelEntry[] pattern = new[]
             {
                 new PixelEntry(0, 0, new Color32(255, 0, 0, 255)),
                 new PixelEntry(1, 0, new Color32(255, 0, 0, 255))
             };
-            SparkRequest request = new SparkRequest
+            FireworkRequest request = new FireworkRequest
             {
                 Position = new Vector3(1f, 2f, 3f),
                 Pattern = pattern
@@ -316,7 +316,7 @@ namespace HanabiCanvas.Tests.EditMode
         [Test]
         public void InitializeParticles_WithPattern_UsesPatternColors()
         {
-            SparkParticle[] particles = new SparkParticle[10];
+            FireworkParticle[] particles = new FireworkParticle[10];
             // All pixels are the same color — every particle should get that color
             Color32 red = new Color32(255, 0, 0, 255);
             PixelEntry[] pattern = new[]
@@ -325,7 +325,7 @@ namespace HanabiCanvas.Tests.EditMode
                 new PixelEntry(1, 0, red),
                 new PixelEntry(2, 0, red)
             };
-            SparkRequest request = new SparkRequest
+            FireworkRequest request = new FireworkRequest
             {
                 Position = Vector3.zero,
                 Pattern = pattern
@@ -348,8 +348,8 @@ namespace HanabiCanvas.Tests.EditMode
         [Test]
         public void InitializeParticles_NoPattern_UsesWhite()
         {
-            SparkParticle[] particles = new SparkParticle[5];
-            SparkRequest request = new SparkRequest
+            FireworkParticle[] particles = new FireworkParticle[5];
+            FireworkRequest request = new FireworkRequest
             {
                 Position = Vector3.zero,
                 Pattern = null

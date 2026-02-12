@@ -9,10 +9,10 @@ using HanabiCanvas.Runtime.Firework;
 
 namespace HanabiCanvas.Tests.EditMode
 {
-    public class PatternSparkBehaviourTests
+    public class PatternFireworkBehaviourTests
     {
         // ---- Private Fields ----
-        private PatternSparkBehaviourSO _behaviour;
+        private PatternFireworkBehaviourSO _behaviour;
 
         // Test config values (set in Setup)
         // convergeSpeed=10, holdDuration=1.0, fadeDelay=0.2, fadeDuration=0.5
@@ -22,7 +22,7 @@ namespace HanabiCanvas.Tests.EditMode
         [SetUp]
         public void Setup()
         {
-            _behaviour = ScriptableObject.CreateInstance<PatternSparkBehaviourSO>();
+            _behaviour = ScriptableObject.CreateInstance<PatternFireworkBehaviourSO>();
 
             SerializedObject behaviourSO = new SerializedObject(_behaviour);
             behaviourSO.FindProperty("_convergeSpeed").floatValue = 10.0f;
@@ -56,7 +56,7 @@ namespace HanabiCanvas.Tests.EditMode
         ///   worldOffset = (pixelX - 16) * 0.5, (pixelY - 16) * 0.5
         ///   distance = |worldOffset|
         /// </summary>
-        private SparkRequest CreateSinglePixelRequest(byte pixelX, byte pixelY,
+        private FireworkRequest CreateSinglePixelRequest(byte pixelX, byte pixelY,
             Vector3 origin = default)
         {
             if (origin == default)
@@ -69,7 +69,7 @@ namespace HanabiCanvas.Tests.EditMode
                 new PixelEntry(pixelX, pixelY, new Color32(255, 0, 0, 255))
             };
 
-            return new SparkRequest
+            return new FireworkRequest
             {
                 Position = origin,
                 Pattern = pattern,
@@ -84,7 +84,7 @@ namespace HanabiCanvas.Tests.EditMode
         /// Pixel B at grid (16, 0) = worldY offset = (0-16)*0.5 = -8 → distance 8.
         /// With convergeSpeed=10: formationTime_A=0, formationTime_B=0.8.
         /// </summary>
-        private SparkRequest CreateTwoPixelRequest(Vector3 origin = default)
+        private FireworkRequest CreateTwoPixelRequest(Vector3 origin = default)
         {
             if (origin == default)
             {
@@ -97,7 +97,7 @@ namespace HanabiCanvas.Tests.EditMode
                 new PixelEntry(16, 0, new Color32(0, 255, 0, 255))   // far, dist=8
             };
 
-            return new SparkRequest
+            return new FireworkRequest
             {
                 Position = origin,
                 Pattern = pattern,
@@ -120,7 +120,7 @@ namespace HanabiCanvas.Tests.EditMode
         [Test]
         public void GetParticleCount_ReturnsPatternLength()
         {
-            SparkRequest request = CreateSinglePixelRequest(0, 0);
+            FireworkRequest request = CreateSinglePixelRequest(0, 0);
 
             Assert.AreEqual(1, _behaviour.GetParticleCount(request));
         }
@@ -128,7 +128,7 @@ namespace HanabiCanvas.Tests.EditMode
         [Test]
         public void GetParticleCount_NullPattern_ReturnsZero()
         {
-            SparkRequest request = new SparkRequest
+            FireworkRequest request = new FireworkRequest
             {
                 Position = Vector3.zero,
                 Pattern = null
@@ -141,8 +141,8 @@ namespace HanabiCanvas.Tests.EditMode
         [Test]
         public void InitializeParticles_SetsStartPositionToOrigin()
         {
-            SparkRequest request = CreateTwoPixelRequest();
-            SparkParticle[] particles = new SparkParticle[2];
+            FireworkRequest request = CreateTwoPixelRequest();
+            FireworkParticle[] particles = new FireworkParticle[2];
 
             _behaviour.InitializeParticles(particles, 2, request);
 
@@ -160,8 +160,8 @@ namespace HanabiCanvas.Tests.EditMode
         {
             // Single pixel at grid position (16, 16) on a 32x32 grid
             // halfWidth = 16.0, offset = (16 - 16) * 0.5 = 0
-            SparkRequest request = CreateSinglePixelRequest(16, 16);
-            SparkParticle[] particles = new SparkParticle[1];
+            FireworkRequest request = CreateSinglePixelRequest(16, 16);
+            FireworkParticle[] particles = new FireworkParticle[1];
 
             _behaviour.InitializeParticles(particles, 1, request);
 
@@ -181,7 +181,7 @@ namespace HanabiCanvas.Tests.EditMode
             {
                 new PixelEntry(0, 0, new Color32(128, 64, 32, 255))
             };
-            SparkRequest request = new SparkRequest
+            FireworkRequest request = new FireworkRequest
             {
                 Position = Vector3.zero,
                 Pattern = pattern,
@@ -189,7 +189,7 @@ namespace HanabiCanvas.Tests.EditMode
                 PatternHeight = 32
             };
 
-            SparkParticle[] particles = new SparkParticle[1];
+            FireworkParticle[] particles = new FireworkParticle[1];
             _behaviour.InitializeParticles(particles, 1, request);
 
             Assert.AreEqual(128f / 255f, particles[0].Color.r, 0.01f);
@@ -204,8 +204,8 @@ namespace HanabiCanvas.Tests.EditMode
             // Two-pixel request: center (dist=0) and far (dist=8)
             // maxFormationTime = 8 / 10 = 0.8
             // totalLife = 0.8 + 1.0 + 0.2 + 0.5 = 2.5
-            SparkRequest request = CreateTwoPixelRequest();
-            SparkParticle[] particles = new SparkParticle[2];
+            FireworkRequest request = CreateTwoPixelRequest();
+            FireworkParticle[] particles = new FireworkParticle[2];
 
             _behaviour.InitializeParticles(particles, 2, request);
 
@@ -223,8 +223,8 @@ namespace HanabiCanvas.Tests.EditMode
         {
             // Pixel at grid (16, 0): worldY = (0-16)*0.5 = -8, target = (0, 10-8, 0) = (0, 2, 0)
             // Direction from origin (0,10,0) to target (0,2,0) = (0,-8,0) normalized = (0,-1,0)
-            SparkRequest request = CreateSinglePixelRequest(16, 0);
-            SparkParticle[] particles = new SparkParticle[1];
+            FireworkRequest request = CreateSinglePixelRequest(16, 0);
+            FireworkParticle[] particles = new FireworkParticle[1];
 
             _behaviour.InitializeParticles(particles, 1, request);
 
@@ -240,8 +240,8 @@ namespace HanabiCanvas.Tests.EditMode
         public void InitializeParticles_ZeroDistancePixel_SetsZeroVelocity()
         {
             // Pixel at grid center (16, 16) → distance = 0 → direction = zero vector
-            SparkRequest request = CreateSinglePixelRequest(16, 16);
-            SparkParticle[] particles = new SparkParticle[1];
+            FireworkRequest request = CreateSinglePixelRequest(16, 16);
+            FireworkParticle[] particles = new FireworkParticle[1];
 
             _behaviour.InitializeParticles(particles, 1, request);
 
@@ -255,8 +255,8 @@ namespace HanabiCanvas.Tests.EditMode
         {
             // Pixel at (16, 0): dist=8, formationTime=0.8
             // At elapsed=0.4 (halfway), with linear curve, position should be halfway
-            SparkRequest request = CreateSinglePixelRequest(16, 0);
-            SparkParticle[] particles = new SparkParticle[1];
+            FireworkRequest request = CreateSinglePixelRequest(16, 0);
+            FireworkParticle[] particles = new FireworkParticle[1];
             _behaviour.InitializeParticles(particles, 1, request);
 
             Vector3 start = particles[0].StartPosition;
@@ -278,8 +278,8 @@ namespace HanabiCanvas.Tests.EditMode
             // Pixel 0 at center (dist=0, formationTime=0)
             // Pixel 1 at (16, 0) (dist=8, formationTime=0.8)
             // At elapsed=0.4: pixel 0 should be at target (holding), pixel 1 still converging
-            SparkRequest request = CreateTwoPixelRequest();
-            SparkParticle[] particles = new SparkParticle[2];
+            FireworkRequest request = CreateTwoPixelRequest();
+            FireworkParticle[] particles = new FireworkParticle[2];
             _behaviour.InitializeParticles(particles, 2, request);
 
             Vector3 target0 = particles[0].TargetPosition;
@@ -304,8 +304,8 @@ namespace HanabiCanvas.Tests.EditMode
         {
             // Pixel at (16, 0): dist=8, formationTime=0.8
             // At elapsed=0.81 (just past formation), should be at target (hold)
-            SparkRequest request = CreateSinglePixelRequest(16, 0);
-            SparkParticle[] particles = new SparkParticle[1];
+            FireworkRequest request = CreateSinglePixelRequest(16, 0);
+            FireworkParticle[] particles = new FireworkParticle[1];
             _behaviour.InitializeParticles(particles, 1, request);
 
             Vector3 target = particles[0].TargetPosition;
@@ -324,8 +324,8 @@ namespace HanabiCanvas.Tests.EditMode
         {
             // Two-pixel request: maxFormationTime=0.8, holdEnd=0.8+1.0=1.8
             // At elapsed=1.4 (well into hold), particle should be at target
-            SparkRequest request = CreateTwoPixelRequest();
-            SparkParticle[] particles = new SparkParticle[2];
+            FireworkRequest request = CreateTwoPixelRequest();
+            FireworkParticle[] particles = new FireworkParticle[2];
             _behaviour.InitializeParticles(particles, 2, request);
 
             Vector3 target1 = particles[1].TargetPosition;
@@ -343,8 +343,8 @@ namespace HanabiCanvas.Tests.EditMode
         {
             // maxFormationTime=0.8, holdEnd=1.8, fadeStart=2.0
             // At elapsed=1.4 (hold phase): alpha should be 1.0
-            SparkRequest request = CreateTwoPixelRequest();
-            SparkParticle[] particles = new SparkParticle[2];
+            FireworkRequest request = CreateTwoPixelRequest();
+            FireworkParticle[] particles = new FireworkParticle[2];
             _behaviour.InitializeParticles(particles, 2, request);
 
             _behaviour.UpdateParticles(particles, 2, 1.4f);
@@ -365,8 +365,8 @@ namespace HanabiCanvas.Tests.EditMode
             // driftOffset = (0,-1,0) * 0.5 * 0.2 = (0,-0.1,0)
             // gravityOffset = down * 0.5 * 2.0 * 0.04 = (0, -0.04, 0)
             // position = target + (0, -0.14, 0)
-            SparkRequest request = CreateTwoPixelRequest();
-            SparkParticle[] particles = new SparkParticle[2];
+            FireworkRequest request = CreateTwoPixelRequest();
+            FireworkParticle[] particles = new FireworkParticle[2];
             _behaviour.InitializeParticles(particles, 2, request);
 
             Vector3 target1 = particles[1].TargetPosition;
@@ -391,8 +391,8 @@ namespace HanabiCanvas.Tests.EditMode
             // At elapsed=2.3 (0.5s into drift):
             // driftOffset = zero (direction=zero)
             // gravityOffset = down * 0.5 * 2.0 * 0.25 = (0, -0.25, 0)
-            SparkRequest request = CreateTwoPixelRequest();
-            SparkParticle[] particles = new SparkParticle[2];
+            FireworkRequest request = CreateTwoPixelRequest();
+            FireworkParticle[] particles = new FireworkParticle[2];
             _behaviour.InitializeParticles(particles, 2, request);
 
             Vector3 target0 = particles[0].TargetPosition;
@@ -417,8 +417,8 @@ namespace HanabiCanvas.Tests.EditMode
             // maxFormation=0.8, holdEnd=1.8, fadeStart=2.0
             // At elapsed=2.25 (0.25s into fade = halfway through 0.5s fade):
             // fadeProgress=0.5, alphaOverLife linear 1→0 → alpha=0.5
-            SparkRequest request = CreateTwoPixelRequest();
-            SparkParticle[] particles = new SparkParticle[2];
+            FireworkRequest request = CreateTwoPixelRequest();
+            FireworkParticle[] particles = new FireworkParticle[2];
             _behaviour.InitializeParticles(particles, 2, request);
 
             _behaviour.UpdateParticles(particles, 2, 2.25f);
@@ -435,8 +435,8 @@ namespace HanabiCanvas.Tests.EditMode
         public void UpdateParticles_FadeConcurrentWithDrift()
         {
             // At elapsed=2.25: drift is active AND fade is active simultaneously
-            SparkRequest request = CreateTwoPixelRequest();
-            SparkParticle[] particles = new SparkParticle[2];
+            FireworkRequest request = CreateTwoPixelRequest();
+            FireworkParticle[] particles = new FireworkParticle[2];
             _behaviour.InitializeParticles(particles, 2, request);
 
             Vector3 target1 = particles[1].TargetPosition;
@@ -455,8 +455,8 @@ namespace HanabiCanvas.Tests.EditMode
         [Test]
         public void UpdateParticles_DeadParticle_IsSkipped()
         {
-            SparkParticle[] particles = new SparkParticle[1];
-            particles[0] = new SparkParticle
+            FireworkParticle[] particles = new FireworkParticle[1];
+            particles[0] = new FireworkParticle
             {
                 Position = new Vector3(5f, 5f, 5f),
                 Life = 0f,
@@ -473,7 +473,7 @@ namespace HanabiCanvas.Tests.EditMode
         [Test]
         public void IsComplete_AllDead_ReturnsTrue()
         {
-            SparkParticle[] particles = new SparkParticle[3];
+            FireworkParticle[] particles = new FireworkParticle[3];
 
             Assert.IsTrue(_behaviour.IsComplete(particles, 3));
         }
@@ -481,7 +481,7 @@ namespace HanabiCanvas.Tests.EditMode
         [Test]
         public void IsComplete_SomeAlive_ReturnsFalse()
         {
-            SparkParticle[] particles = new SparkParticle[3];
+            FireworkParticle[] particles = new FireworkParticle[3];
             particles[1].Life = 0.5f;
 
             Assert.IsFalse(_behaviour.IsComplete(particles, 3));
@@ -491,8 +491,8 @@ namespace HanabiCanvas.Tests.EditMode
         [Test]
         public void OnValidate_ConvergeSpeedBelowMin_ClampedToMin()
         {
-            PatternSparkBehaviourSO testBehaviour =
-                ScriptableObject.CreateInstance<PatternSparkBehaviourSO>();
+            PatternFireworkBehaviourSO testBehaviour =
+                ScriptableObject.CreateInstance<PatternFireworkBehaviourSO>();
 
             SerializedObject so = new SerializedObject(testBehaviour);
             so.FindProperty("_convergeSpeed").floatValue = 0f;
@@ -506,8 +506,8 @@ namespace HanabiCanvas.Tests.EditMode
         [Test]
         public void OnValidate_FadeDelayBelowMin_ClampedToMin()
         {
-            PatternSparkBehaviourSO testBehaviour =
-                ScriptableObject.CreateInstance<PatternSparkBehaviourSO>();
+            PatternFireworkBehaviourSO testBehaviour =
+                ScriptableObject.CreateInstance<PatternFireworkBehaviourSO>();
 
             SerializedObject so = new SerializedObject(testBehaviour);
             so.FindProperty("_fadeDelay").floatValue = -1f;
@@ -521,8 +521,8 @@ namespace HanabiCanvas.Tests.EditMode
         [Test]
         public void OnValidate_PatternScaleBelowMin_ClampedToMin()
         {
-            PatternSparkBehaviourSO testBehaviour =
-                ScriptableObject.CreateInstance<PatternSparkBehaviourSO>();
+            PatternFireworkBehaviourSO testBehaviour =
+                ScriptableObject.CreateInstance<PatternFireworkBehaviourSO>();
 
             SerializedObject so = new SerializedObject(testBehaviour);
             so.FindProperty("_patternScale").floatValue = -1f;

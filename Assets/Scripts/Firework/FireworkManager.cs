@@ -8,33 +8,33 @@ using UnityEngine;
 namespace HanabiCanvas.Runtime.Firework
 {
     /// <summary>
-    /// Manages spark particle bursts: listens for spark requests via event channel,
+    /// Manages firework particle bursts: listens for firework requests via event channel,
     /// queues them, plays them sequentially, runs multiple behaviours simultaneously
     /// per request, and renders the combined procedural billboard mesh.
     /// </summary>
     [RequireComponent(typeof(MeshFilter))]
     [RequireComponent(typeof(MeshRenderer))]
-    public class SparkManager : MonoBehaviour
+    public class FireworkManager : MonoBehaviour
     {
         private const int VERTS_PER_PARTICLE = 4;
         private const int TRIS_PER_PARTICLE = 6;
 
         [Header("Behaviours")]
-        [Tooltip("Spark behaviours to run simultaneously for each request")]
-        [SerializeField] private SparkBehaviourSO[] _behaviours;
+        [Tooltip("Firework behaviours to run simultaneously for each request")]
+        [SerializeField] private FireworkBehaviourSO[] _behaviours;
 
         [Header("Events")]
-        [Tooltip("Event channel to listen for spark requests")]
-        [SerializeField] private SparkRequestEventSO _onSparkRequested;
+        [Tooltip("Event channel to listen for firework requests")]
+        [SerializeField] private FireworkRequestEventSO _onFireworkRequested;
 
         [Header("Rendering")]
         [Tooltip("Material using HanabiCanvas/FireworkParticle shader (additive)")]
         [SerializeField] private Material _particleMaterial;
 
-        private readonly Queue<SparkRequest> _requestQueue = new Queue<SparkRequest>();
+        private readonly Queue<FireworkRequest> _requestQueue = new Queue<FireworkRequest>();
 
         // Per-behaviour particle storage
-        private SparkParticle[][] _behaviourParticles;
+        private FireworkParticle[][] _behaviourParticles;
         private int[] _behaviourParticleCounts;
         private int _totalParticleCount;
         private bool _isPlaying;
@@ -50,7 +50,7 @@ namespace HanabiCanvas.Runtime.Firework
         private int[] _triangles;
         private bool _isMeshInitialized;
 
-        /// <summary>Whether a spark is currently active.</summary>
+        /// <summary>Whether a firework is currently active.</summary>
         public bool IsPlaying => _isPlaying;
 
         /// <summary>Total number of particles across all active behaviours.</summary>
@@ -64,23 +64,23 @@ namespace HanabiCanvas.Runtime.Firework
 
             if (_camera == null)
             {
-                Debug.LogWarning("[SparkManager] Camera.main is null. Mesh rendering will be skipped.");
+                Debug.LogWarning("[FireworkManager] Camera.main is null. Mesh rendering will be skipped.");
             }
         }
 
         private void OnEnable()
         {
-            if (_onSparkRequested != null)
+            if (_onFireworkRequested != null)
             {
-                _onSparkRequested.Register(HandleSparkRequested);
+                _onFireworkRequested.Register(HandleFireworkRequested);
             }
         }
 
         private void OnDisable()
         {
-            if (_onSparkRequested != null)
+            if (_onFireworkRequested != null)
             {
-                _onSparkRequested.Unregister(HandleSparkRequested);
+                _onFireworkRequested.Unregister(HandleFireworkRequested);
             }
         }
 
@@ -124,11 +124,11 @@ namespace HanabiCanvas.Runtime.Firework
             }
         }
 
-        private void HandleSparkRequested(SparkRequest request)
+        private void HandleFireworkRequested(FireworkRequest request)
         {
             if (!_isPlaying)
             {
-                StartSpark(request);
+                StartFirework(request);
             }
             else
             {
@@ -136,11 +136,11 @@ namespace HanabiCanvas.Runtime.Firework
             }
         }
 
-        private void StartSpark(SparkRequest request)
+        private void StartFirework(FireworkRequest request)
         {
             if (_behaviours == null || _behaviours.Length == 0)
             {
-                Debug.LogWarning("[SparkManager] No behaviours assigned. Cannot start spark.");
+                Debug.LogWarning("[FireworkManager] No behaviours assigned. Cannot start firework.");
                 return;
             }
 
@@ -149,7 +149,7 @@ namespace HanabiCanvas.Runtime.Firework
             // Allocate per-behaviour arrays if needed
             if (_behaviourParticles == null || _behaviourParticles.Length != behaviourCount)
             {
-                _behaviourParticles = new SparkParticle[behaviourCount][];
+                _behaviourParticles = new FireworkParticle[behaviourCount][];
                 _behaviourParticleCounts = new int[behaviourCount];
             }
 
@@ -168,7 +168,7 @@ namespace HanabiCanvas.Runtime.Firework
 
                 if (_behaviourParticles[b] == null || _behaviourParticles[b].Length < count)
                 {
-                    _behaviourParticles[b] = new SparkParticle[count];
+                    _behaviourParticles[b] = new FireworkParticle[count];
                 }
 
                 _behaviours[b].InitializeParticles(_behaviourParticles[b], count, request);
@@ -208,7 +208,7 @@ namespace HanabiCanvas.Runtime.Firework
 
             if (_requestQueue.Count > 0)
             {
-                StartSpark(_requestQueue.Dequeue());
+                StartFirework(_requestQueue.Dequeue());
             }
         }
 
@@ -247,7 +247,7 @@ namespace HanabiCanvas.Runtime.Firework
             }
 
             _mesh = new Mesh();
-            _mesh.name = "SparkParticles";
+            _mesh.name = "FireworkParticles";
             _mesh.MarkDynamic();
 
             _mesh.vertices = _vertices;
@@ -277,7 +277,7 @@ namespace HanabiCanvas.Runtime.Firework
             for (int b = 0; b < _behaviours.Length; b++)
             {
                 int count = _behaviourParticleCounts[b];
-                SparkParticle[] particles = _behaviourParticles[b];
+                FireworkParticle[] particles = _behaviourParticles[b];
 
                 for (int i = 0; i < count; i++)
                 {
