@@ -12,7 +12,6 @@ namespace HanabiCanvas.Editor
     public class HanabiSetupWizard : EditorWindow
     {
         // ---- Constants ----
-        private const string PALETTE_PATH = "Assets/Data/Palettes/Default Color Palette.asset";
         private const string CANVAS_CONFIG_PATH = "Assets/Data/Config/Default Canvas Config.asset";
         private const string BURST_BEHAVIOUR_PATH = "Assets/Data/Fireworks/Default Burst Behaviour.asset";
         private const string RING_BEHAVIOUR_PATH = "Assets/Data/Fireworks/Default Ring Behaviour.asset";
@@ -45,13 +44,12 @@ namespace HanabiCanvas.Editor
             EditorGUILayout.Space(8);
             EditorGUILayout.HelpBox(
                 "Creates default ScriptableObject assets for the Hanabi Canvas project.\n" +
-                "This includes a color palette, canvas config, firework behaviours, " +
+                "This includes a canvas config, firework behaviours, " +
                 "firework request event, and game event channels.",
                 MessageType.Info);
             EditorGUILayout.Space(8);
 
             EditorGUILayout.LabelField("Assets to Create:", EditorStyles.boldLabel);
-            EditorGUILayout.LabelField("  - Default Color Palette (8 classic firework colors)");
             EditorGUILayout.LabelField("  - Default Canvas Config (32x32 grid)");
             EditorGUILayout.LabelField("  - 3 Firework Behaviours (Burst, Ring, Pattern)");
             EditorGUILayout.LabelField("  - Firework Request Event");
@@ -94,8 +92,7 @@ namespace HanabiCanvas.Editor
 
             EnsureDirectoriesExist();
 
-            ColorPaletteSO palette = CreateColorPalette();
-            CanvasConfigSO canvasConfig = CreateCanvasConfig(palette);
+            CreateCanvasConfig();
             CreateFireworkBehaviour<BurstFireworkBehaviourSO>(BURST_BEHAVIOUR_PATH);
             CreateFireworkBehaviour<RingFireworkBehaviourSO>(RING_BEHAVIOUR_PATH);
             CreateFireworkBehaviour<PatternFireworkBehaviourSO>(PATTERN_BEHAVIOUR_PATH);
@@ -113,15 +110,13 @@ namespace HanabiCanvas.Editor
 
         private bool HasExistingAssets()
         {
-            return AssetDatabase.LoadAssetAtPath<Object>(PALETTE_PATH) != null ||
-                   AssetDatabase.LoadAssetAtPath<Object>(CANVAS_CONFIG_PATH) != null ||
+            return AssetDatabase.LoadAssetAtPath<Object>(CANVAS_CONFIG_PATH) != null ||
                    AssetDatabase.LoadAssetAtPath<Object>(BURST_BEHAVIOUR_PATH) != null;
         }
 
         private void EnsureDirectoriesExist()
         {
             EnsureDirectory("Assets/Data");
-            EnsureDirectory("Assets/Data/Palettes");
             EnsureDirectory("Assets/Data/Config");
             EnsureDirectory("Assets/Data/Fireworks");
         }
@@ -136,35 +131,7 @@ namespace HanabiCanvas.Editor
             }
         }
 
-        private ColorPaletteSO CreateColorPalette()
-        {
-            ColorPaletteSO palette = CreateInstance<ColorPaletteSO>();
-
-            SerializedObject serialized = new SerializedObject(palette);
-            serialized.FindProperty("_paletteName").stringValue = "Default Palette";
-
-            SerializedProperty colorsProperty = serialized.FindProperty("_colors");
-            colorsProperty.arraySize = 8;
-
-            SetColor32(colorsProperty.GetArrayElementAtIndex(0), 255, 50, 50, 255);
-            SetColor32(colorsProperty.GetArrayElementAtIndex(1), 255, 128, 0, 255);
-            SetColor32(colorsProperty.GetArrayElementAtIndex(2), 255, 255, 0, 255);
-            SetColor32(colorsProperty.GetArrayElementAtIndex(3), 0, 255, 0, 255);
-            SetColor32(colorsProperty.GetArrayElementAtIndex(4), 0, 255, 255, 255);
-            SetColor32(colorsProperty.GetArrayElementAtIndex(5), 0, 128, 255, 255);
-            SetColor32(colorsProperty.GetArrayElementAtIndex(6), 128, 0, 255, 255);
-            SetColor32(colorsProperty.GetArrayElementAtIndex(7), 255, 255, 255, 255);
-
-            SetColor32(serialized.FindProperty("_backgroundColor"), 32, 32, 32, 255);
-
-            serialized.ApplyModifiedPropertiesWithoutUndo();
-
-            AssetDatabase.CreateAsset(palette, PALETTE_PATH);
-            LogCreated(PALETTE_PATH);
-            return palette;
-        }
-
-        private CanvasConfigSO CreateCanvasConfig(ColorPaletteSO palette)
+        private CanvasConfigSO CreateCanvasConfig()
         {
             CanvasConfigSO config = CreateInstance<CanvasConfigSO>();
 
@@ -172,7 +139,6 @@ namespace HanabiCanvas.Editor
             serialized.FindProperty("_gridWidth").intValue = 32;
             serialized.FindProperty("_gridHeight").intValue = 32;
             serialized.FindProperty("_cellSize").floatValue = 0.25f;
-            serialized.FindProperty("_defaultPalette").objectReferenceValue = palette;
             serialized.ApplyModifiedPropertiesWithoutUndo();
 
             AssetDatabase.CreateAsset(config, CANVAS_CONFIG_PATH);
@@ -201,11 +167,6 @@ namespace HanabiCanvas.Editor
 
             AssetDatabase.CreateAsset(gameEvent, path);
             LogCreated(path);
-        }
-
-        private void SetColor32(SerializedProperty property, byte r, byte g, byte b, byte a)
-        {
-            property.colorValue = new Color(r / 255f, g / 255f, b / 255f, a / 255f);
         }
 
         private void LogCreated(string path)

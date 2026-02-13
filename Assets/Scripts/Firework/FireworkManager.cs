@@ -4,6 +4,7 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+using HanabiCanvas.Runtime;
 
 namespace HanabiCanvas.Runtime.Firework
 {
@@ -26,6 +27,10 @@ namespace HanabiCanvas.Runtime.Firework
         [Header("Events")]
         [Tooltip("Event channel to listen for firework requests")]
         [SerializeField] private FireworkRequestEventSO _onFireworkRequested;
+
+        [Header("Shared Variables")]
+        [Tooltip("Written true when playing, false when complete — read by FireworkSessionManager")]
+        [SerializeField] private BoolVariableSO _isFireworkPlaying;
 
         [Header("Rendering")]
         [Tooltip("Material using HanabiCanvas/FireworkParticle shader (additive)")]
@@ -187,6 +192,11 @@ namespace HanabiCanvas.Runtime.Firework
             }
 
             _isPlaying = true;
+
+            if (_isFireworkPlaying != null)
+            {
+                _isFireworkPlaying.Value = true;
+            }
         }
 
         private void CheckCompletion()
@@ -205,6 +215,11 @@ namespace HanabiCanvas.Runtime.Firework
             }
 
             _isPlaying = false;
+
+            if (_isFireworkPlaying != null)
+            {
+                _isFireworkPlaying.Value = false;
+            }
 
             if (_requestQueue.Count > 0)
             {
@@ -261,6 +276,15 @@ namespace HanabiCanvas.Runtime.Firework
             if (_particleMaterial != null)
             {
                 _meshRenderer.sharedMaterial = _particleMaterial;
+
+                if (_particleMaterial.mainTexture != null)
+                {
+                    _particleMaterial.EnableKeyword("_USE_TEXTURE");
+                }
+                else
+                {
+                    _particleMaterial.DisableKeyword("_USE_TEXTURE");
+                }
             }
 
             _isMeshInitialized = true;

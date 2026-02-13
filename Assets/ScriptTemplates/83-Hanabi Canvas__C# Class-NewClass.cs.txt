@@ -1,0 +1,13 @@
+// ============================================================================
+// Copyright (c) 2026 Itay Beresi. All rights reserved.
+// ============================================================================
+
+namespace HanabiCanvas.Runtime
+{
+    /// <summary>
+    /// TODO: Add description.
+    /// </summary>
+    public class #SCRIPTNAME#
+    {
+    }
+}

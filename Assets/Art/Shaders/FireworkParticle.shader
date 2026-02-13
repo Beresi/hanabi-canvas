@@ -2,7 +2,7 @@ Shader "HanabiCanvas/FireworkParticle"
 {
     Properties
     {
-        [HideInInspector] _MainTex ("Texture", 2D) = "white" {}
+        _MainTex ("Particle Texture", 2D) = "white" {}
     }
 
     SubShader
@@ -26,8 +26,12 @@ Shader "HanabiCanvas/FireworkParticle"
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+            #pragma multi_compile_local _ _USE_TEXTURE
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+
+            TEXTURE2D(_MainTex);
+            SAMPLER(sampler_MainTex);
 
             struct Attributes
             {
@@ -54,9 +58,14 @@ Shader "HanabiCanvas/FireworkParticle"
 
             half4 frag(Varyings input) : SV_Target
             {
+            #ifdef _USE_TEXTURE
+                half4 texColor = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, input.uv);
+                float alpha = texColor.a;
+            #else
                 float2 centered = input.uv - 0.5;
                 float dist = length(centered) * 2.0;
                 float alpha = saturate(1.0 - dist * dist);
+            #endif
 
                 half4 color = half4(input.color.rgb * alpha * input.color.a, alpha * input.color.a);
                 return color;

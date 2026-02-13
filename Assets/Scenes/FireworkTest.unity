@@ -314,8 +314,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: HanabiCanvas.Runtime::HanabiCanvas.Runtime.Firework.SparkManager
   _behaviours:
   - {fileID: 11400000, guid: 38b67ba0159484745adcaae21c85ea3f, type: 2}
-  - {fileID: 11400000, guid: 11275cd3e9ea8e54b9325a7e6ff774a9, type: 2}
+  - {fileID: 11400000, guid: a15e4b39c9dbead4cb59830b2a676da3, type: 2}
+  - {fileID: 11400000, guid: 61e4f63f3dc892d4d89dadcdb619fdf3, type: 2}
   _onFireworkRequested: {fileID: 11400000, guid: 599eaea6fd365f442b9e519b8a89cb21, type: 2}
+  _isFireworkPlaying: {fileID: 0}
   _particleMaterial: {fileID: 2100000, guid: 0f2a82af683d71742a3e209e4e796b12, type: 2}
 --- !u!23 &1988462518
 MeshRenderer:

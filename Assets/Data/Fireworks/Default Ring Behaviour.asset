@@ -19,7 +19,7 @@ MonoBehaviour:
   _burstSpeedVariance: 0.513
   _gravity: 8
   _drag: 0.995
-  _lifetime: 2
+  _lifetime: 5
   _lifetimeVariance: 0.2
   _particleSize: 0.3
   _sizeOverLife:
@@ -106,5 +106,5 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _isAutoRadiusFromPattern: 0
-  _patternScaleHint: 2.55
+  _isAutoRadiusFromPattern: 1
+  _patternScaleHint: 8

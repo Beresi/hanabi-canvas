@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0289fd63e089c8d4a832c5595eb0facc, type: 3}
   m_Name: Default Pattern Behaviour
   m_EditorClassIdentifier: HanabiCanvas.Runtime::HanabiCanvas.Runtime.Firework.PatternSparkBehaviourSO
-  _convergeSpeed: 8
+  _convergeSpeed: 2
   _formationCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 0.49667358
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -37,13 +37,13 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _holdDuration: 0.1
-  _driftSpeed: 0.4
-  _gravity: 0.5
+  _holdDuration: 2.5
+  _driftSpeed: 0.03
+  _gravity: 0.1
   _fadeDelay: 0
   _fadeDuration: 5
   _particleSize: 0.1
-  _patternScale: 0.3
+  _patternScale: 0.15
   _sizeOverLife:
     serializedVersion: 2
     m_Curve:

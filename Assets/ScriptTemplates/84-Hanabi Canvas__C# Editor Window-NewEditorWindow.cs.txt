@@ -1,0 +1,25 @@
+// ============================================================================
+// Copyright (c) 2026 Itay Beresi. All rights reserved.
+// ============================================================================
+
+using UnityEditor;
+using UnityEngine;
+
+namespace HanabiCanvas.Editor
+{
+    /// <summary>
+    /// TODO: Add description.
+    /// </summary>
+    public class #SCRIPTNAME# : EditorWindow
+    {
+        [MenuItem("Tools/Hanabi Canvas/#SCRIPTNAME#")]
+        public static void ShowWindow()
+        {
+            GetWindow<#SCRIPTNAME#>("#SCRIPTNAME#");
+        }
+
+        private void OnGUI()
+        {
+        }
+    }
+}

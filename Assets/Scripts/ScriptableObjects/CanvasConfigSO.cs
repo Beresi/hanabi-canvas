@@ -1,11 +1,11 @@
-// ============================================================================
+﻿// ============================================================================
 // Copyright (c) 2026 Itay Beresi. All rights reserved.
 // ============================================================================
 using UnityEngine;
 
 namespace HanabiCanvas.Runtime
 {
-    [CreateAssetMenu(fileName = "New Canvas Config", menuName = "Hanabi Canvas/Config/Canvas Config")]
+    
     public class CanvasConfigSO : ScriptableObject
     {
         // ---- Constants ----
@@ -27,15 +27,10 @@ namespace HanabiCanvas.Runtime
         [Min(0.01f)]
         [SerializeField] private float _cellSize = 0.25f;
 
-        [Header("Palette")]
-        [Tooltip("Default color palette for this canvas")]
-        [SerializeField] private ColorPaletteSO _defaultPalette;
-
         // ---- Properties ----
         public int GridWidth => _gridWidth;
         public int GridHeight => _gridHeight;
         public float CellSize => _cellSize;
-        public ColorPaletteSO DefaultPalette => _defaultPalette;
 
         // ---- Validation ----
         private void OnValidate()
@@ -43,11 +38,6 @@ namespace HanabiCanvas.Runtime
             _gridWidth = Mathf.Clamp(_gridWidth, MIN_GRID_SIZE, MAX_GRID_SIZE);
             _gridHeight = Mathf.Clamp(_gridHeight, MIN_GRID_SIZE, MAX_GRID_SIZE);
             _cellSize = Mathf.Max(MIN_CELL_SIZE, _cellSize);
-
-            if (_defaultPalette == null)
-            {
-                Debug.LogWarning("[CanvasConfigSO] Default palette is not assigned.", this);
-            }
         }
     }
 }

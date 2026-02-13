@@ -1,0 +1,42 @@
+// ============================================================================
+// Copyright (c) 2026 Itay Beresi. All rights reserved.
+// ============================================================================
+
+using UnityEngine;
+
+namespace HanabiCanvas.Runtime
+{
+    /// <summary>
+    /// TODO: Add description.
+    /// </summary>
+    public class #SCRIPTNAME# : MonoBehaviour
+    {
+        #region Serialized Fields
+        #endregion
+
+        #region Private Fields
+        #endregion
+
+        #region Unity Lifecycle
+
+        private void Awake()
+        {
+        }
+
+        private void OnEnable()
+        {
+        }
+
+        private void OnDisable()
+        {
+        }
+
+        #endregion
+
+        #region Public Methods
+        #endregion
+
+        #region Private Methods
+        #endregion
+    }
+}

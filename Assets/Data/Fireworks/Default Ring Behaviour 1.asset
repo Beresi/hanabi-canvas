@@ -9,24 +9,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c1a15213cac9ee47be88ea039ad304c, type: 3}
-  m_Name: Default Burst Behaviour
-  m_EditorClassIdentifier: HanabiCanvas.Runtime::HanabiCanvas.Runtime.Firework.BurstSparkBehaviourSO
-  _particleCount: 334
-  _burstSpeed: 1
-  _burstSpeedVariance: 1
-  _burstExtentMultiplier: 3
-  _gravity: 1
-  _drag: 0.98
-  _lifetime: 3
-  _lifetimeVariance: 0.627
-  _particleSize: 0.1
+  m_Script: {fileID: 11500000, guid: 607e52923b734694793e0df78f8a94b2, type: 3}
+  m_Name: Default Ring Behaviour 1
+  m_EditorClassIdentifier: HanabiCanvas.Runtime::HanabiCanvas.Runtime.Firework.RingSparkBehaviourSO
+  _particleCount: 887
+  _ringRadius: 300
+  _ringRadiusVariance: 0.053
+  _burstSpeed: 3.36
+  _burstSpeedVariance: 0.64
+  _gravity: 0
+  _drag: 0.997
+  _lifetime: 2
+  _lifetimeVariance: 0.75
+  _particleSize: 0.3
   _sizeOverLife:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0.0034217834
-      value: 0.0011291504
+      time: 0.0033340454
+      value: -0.0009498596
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -34,43 +35,28 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.4920174
-      value: 0.98597777
-      inSlope: 0.2527273
-      outSlope: 0.2527273
+      time: 0.23640794
+      value: 0.98947555
+      inSlope: 0.27268338
+      outSlope: 0.27268338
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.9800001
-      value: 0.07136071
-      inSlope: 2
-      outSlope: 2
+      time: 0.38464674
+      value: 0.65841925
+      inSlope: 0.7548752
+      outSlope: 0.7548752
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  _alphaOverLife:
-    serializedVersion: 2
-    m_Curve:
+      inWeight: 0.33333334
+      outWeight: 0.2482884
     - serializedVersion: 3
-      time: 0.013389587
-      value: 0.5015602
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.48369297
-      value: 0.99937207
-      inSlope: 0.1886749
-      outSlope: 0.1886749
+      time: 0.5571697
+      value: 0.87813866
+      inSlope: -0.90081084
+      outSlope: -0.90081084
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
@@ -87,3 +73,38 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _alphaOverLife:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.006668091
+      value: 0.0028533936
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.47971123
+      value: 0.9834677
+      inSlope: 0.15602843
+      outSlope: 0.15602843
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -1
+      outSlope: -1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _isAutoRadiusFromPattern: 1
+  _patternScaleHint: 8

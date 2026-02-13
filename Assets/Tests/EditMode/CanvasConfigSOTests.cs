@@ -3,7 +3,6 @@
 // ============================================================================
 using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.TestTools;
 using UnityEditor;
 using HanabiCanvas.Runtime;
 
@@ -13,21 +12,18 @@ namespace HanabiCanvas.Tests.EditMode
     {
         // ---- Private Fields ----
         private CanvasConfigSO _canvasConfig;
-        private ColorPaletteSO _palette;
 
         // ---- Setup / Teardown ----
         [SetUp]
         public void SetUp()
         {
             _canvasConfig = ScriptableObject.CreateInstance<CanvasConfigSO>();
-            _palette = ScriptableObject.CreateInstance<ColorPaletteSO>();
         }
 
         [TearDown]
         public void TearDown()
         {
             Object.DestroyImmediate(_canvasConfig);
-            Object.DestroyImmediate(_palette);
         }
 
         // ---- Tests ----
@@ -87,19 +83,6 @@ namespace HanabiCanvas.Tests.EditMode
             so.ApplyModifiedPropertiesWithoutUndo();
 
             Assert.GreaterOrEqual(_canvasConfig.CellSize, 0.01f);
-        }
-
-        [Test]
-        public void OnValidate_NullPalette_LogsWarning()
-        {
-            LogAssert.Expect(LogType.Warning,
-                new System.Text.RegularExpressions.Regex(
-                    ".*palette.*",
-                    System.Text.RegularExpressions.RegexOptions.IgnoreCase));
-
-            SerializedObject so = new SerializedObject(_canvasConfig);
-            so.FindProperty("_gridWidth").intValue = 16;
-            so.ApplyModifiedPropertiesWithoutUndo();
         }
     }
 }
