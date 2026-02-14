@@ -7,6 +7,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using HanabiCanvas.Runtime;
 using HanabiCanvas.Runtime.Events;
+using HanabiCanvas.Runtime.Firework;
+using HanabiCanvas.Runtime.GameFlow;
 
 namespace HanabiCanvas.Editor
 {
@@ -20,6 +22,11 @@ namespace HanabiCanvas.Editor
         private const string PATTERN_LIBRARY_PATH = "Assets/Data/Config/Pattern Library.asset";
         private const string CANVAS_CONFIG_PATH = "Assets/Data/Config/New Canvas Config.asset";
         private const string COLOR_BUTTON_PREFAB_PATH = "Assets/Prefabs/ColorButton.prefab";
+        private const string LAUNCH_PATTERN_EVENT_PATH = "Assets/Data/Config/OnLaunchPattern.asset";
+        private const string SELECTED_PATTERN_INDEX_PATH = "Assets/Data/Config/Selected Pattern Index.asset";
+        private const string FIREWORK_REQUESTED_EVENT_PATH = "Assets/Data/Fireworks/On Firework Requested.asset";
+        private const string IS_FIREWORK_PLAYING_PATH = "Assets/Data/Config/Is Firework Playing.asset";
+        private const string THUMBNAIL_PREFAB_PATH = "Assets/Prefabs/PatternThumbnail.prefab";
 
         // ---- Private Fields ----
         private string _statusMessage = "";
@@ -193,7 +200,7 @@ namespace HanabiCanvas.Editor
             saveButtonRect.anchorMax = new Vector2(0.5f, 0f);
             saveButtonRect.pivot = new Vector2(0.5f, 0f);
             saveButtonRect.sizeDelta = new Vector2(140f, 40f);
-            saveButtonRect.anchoredPosition = new Vector2(-160f, 40f);
+            saveButtonRect.anchoredPosition = new Vector2(-160f, 100f);
 
             SavePatternButton savePatternButton = saveButtonObj.AddComponent<SavePatternButton>();
             SerializedObject savePatternSO = new SerializedObject(savePatternButton);
@@ -207,12 +214,110 @@ namespace HanabiCanvas.Editor
             clearButtonRect.anchorMax = new Vector2(0.5f, 0f);
             clearButtonRect.pivot = new Vector2(0.5f, 0f);
             clearButtonRect.sizeDelta = new Vector2(140f, 40f);
-            clearButtonRect.anchoredPosition = new Vector2(0f, 40f);
+            clearButtonRect.anchoredPosition = new Vector2(0f, 100f);
 
             ClearCanvasButton clearCanvasButton = clearButtonObj.AddComponent<ClearCanvasButton>();
             SerializedObject clearCanvasSO = new SerializedObject(clearCanvasButton);
             clearCanvasSO.FindProperty("_onCanvasCleared").objectReferenceValue = clearEvent;
             clearCanvasSO.ApplyModifiedPropertiesWithoutUndo();
+
+            // Load or create gallery/launch SOs
+            GameEventSO launchPatternEvent = LoadOrCreate<GameEventSO>(LAUNCH_PATTERN_EVENT_PATH);
+            IntVariableSO selectedPatternIndex = LoadOrCreate<IntVariableSO>(SELECTED_PATTERN_INDEX_PATH);
+
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+
+            launchPatternEvent = AssetDatabase.LoadAssetAtPath<GameEventSO>(LAUNCH_PATTERN_EVENT_PATH);
+            selectedPatternIndex = AssetDatabase.LoadAssetAtPath<IntVariableSO>(SELECTED_PATTERN_INDEX_PATH);
+
+            FireworkRequestEventSO fireworkRequestEvent =
+                AssetDatabase.LoadAssetAtPath<FireworkRequestEventSO>(FIREWORK_REQUESTED_EVENT_PATH);
+            BoolVariableSO isFireworkPlaying =
+                AssetDatabase.LoadAssetAtPath<BoolVariableSO>(IS_FIREWORK_PLAYING_PATH);
+
+            // Create PatternThumbnail prefab if missing
+            GameObject thumbnailPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(THUMBNAIL_PREFAB_PATH);
+            if (thumbnailPrefab == null)
+            {
+                thumbnailPrefab = CreateThumbnailPrefab();
+            }
+
+            // GalleryPanel (bottom of canvas)
+            GameObject galleryPanelObj = CreateUIChild("GalleryPanel", drawingScreenObj);
+            RectTransform galleryPanelRect = galleryPanelObj.GetComponent<RectTransform>();
+            galleryPanelRect.anchorMin = new Vector2(0f, 0f);
+            galleryPanelRect.anchorMax = new Vector2(1f, 0f);
+            galleryPanelRect.pivot = new Vector2(0.5f, 0f);
+            galleryPanelRect.sizeDelta = new Vector2(0f, 80f);
+            galleryPanelRect.anchoredPosition = Vector2.zero;
+
+            // Viewport (child of GalleryPanel with Mask)
+            GameObject viewportObj = CreateUIChild("Viewport", galleryPanelObj);
+            Image viewportImage = viewportObj.AddComponent<Image>();
+            viewportImage.color = new Color(0.08f, 0.08f, 0.12f, 1f);
+            viewportObj.AddComponent<Mask>().showMaskGraphic = true;
+            StretchFull(viewportObj.GetComponent<RectTransform>());
+
+            // ThumbnailContainer (child of Viewport with HorizontalLayoutGroup)
+            GameObject thumbnailContainerObj = CreateUIChild("ThumbnailContainer", viewportObj);
+            RectTransform thumbnailContainerRect = thumbnailContainerObj.GetComponent<RectTransform>();
+            thumbnailContainerRect.anchorMin = new Vector2(0f, 0f);
+            thumbnailContainerRect.anchorMax = new Vector2(0f, 1f);
+            thumbnailContainerRect.pivot = new Vector2(0f, 0.5f);
+            thumbnailContainerRect.sizeDelta = new Vector2(0f, 0f);
+            thumbnailContainerRect.anchoredPosition = Vector2.zero;
+
+            ContentSizeFitter csf = thumbnailContainerObj.AddComponent<ContentSizeFitter>();
+            csf.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
+            csf.verticalFit = ContentSizeFitter.FitMode.Unconstrained;
+
+            HorizontalLayoutGroup hlg = thumbnailContainerObj.AddComponent<HorizontalLayoutGroup>();
+            hlg.spacing = 8f;
+            hlg.padding = new RectOffset(4, 4, 4, 4);
+            hlg.childAlignment = TextAnchor.MiddleLeft;
+            hlg.childControlWidth = false;
+            hlg.childControlHeight = false;
+            hlg.childForceExpandWidth = false;
+            hlg.childForceExpandHeight = false;
+
+            // ScrollRect on GalleryPanel
+            ScrollRect scrollRect = galleryPanelObj.AddComponent<ScrollRect>();
+            scrollRect.horizontal = true;
+            scrollRect.vertical = false;
+            scrollRect.viewport = viewportObj.GetComponent<RectTransform>();
+            scrollRect.content = thumbnailContainerRect;
+
+            // Wire PatternGalleryUI on GalleryPanel
+            PatternGalleryUI galleryUI = galleryPanelObj.AddComponent<PatternGalleryUI>();
+            SerializedObject galleryUISO = new SerializedObject(galleryUI);
+            galleryUISO.FindProperty("_patternLibrary").objectReferenceValue = patternLibrary;
+            galleryUISO.FindProperty("_selectedPatternIndex").objectReferenceValue = selectedPatternIndex;
+            galleryUISO.FindProperty("_onLaunchPattern").objectReferenceValue = launchPatternEvent;
+            galleryUISO.FindProperty("_thumbnailContainer").objectReferenceValue = thumbnailContainerRect;
+            galleryUISO.FindProperty("_thumbnailPrefab").objectReferenceValue = thumbnailPrefab;
+            galleryUISO.ApplyModifiedPropertiesWithoutUndo();
+
+            // LaunchManagerHolder (NOT under Canvas — world-space Transform)
+            GameObject launchManagerObj = new GameObject("LaunchManagerHolder");
+            Undo.RegisterCreatedObjectUndo(launchManagerObj, "Create LaunchManagerHolder");
+
+            GameObject spawnPointObj = new GameObject("FireworkSpawnPoint");
+            spawnPointObj.transform.SetParent(launchManagerObj.transform, false);
+            spawnPointObj.transform.localPosition = new Vector3(0f, 10f, 0f);
+
+            PatternLaunchManager launchManager = launchManagerObj.AddComponent<PatternLaunchManager>();
+            SerializedObject launchManagerSO = new SerializedObject(launchManager);
+            launchManagerSO.FindProperty("_patternLibrary").objectReferenceValue = patternLibrary;
+            launchManagerSO.FindProperty("_selectedPatternIndex").objectReferenceValue = selectedPatternIndex;
+            launchManagerSO.FindProperty("_onLaunchPattern").objectReferenceValue = launchPatternEvent;
+            launchManagerSO.FindProperty("_onFireworkRequested").objectReferenceValue = fireworkRequestEvent;
+            launchManagerSO.FindProperty("_isFireworkPlaying").objectReferenceValue = isFireworkPlaying;
+            launchManagerSO.FindProperty("_fireworkSpawnPoint").objectReferenceValue = spawnPointObj.transform;
+            launchManagerSO.FindProperty("_drawingScreen").objectReferenceValue = drawingScreenObj;
+            launchManagerSO.ApplyModifiedPropertiesWithoutUndo();
+
+            Debug.Log("[DrawingScreenWizard] Note: Wire CameraController on PatternLaunchManager manually for camera transitions.");
 
             // Ensure there's an EventSystem in the scene
             if (Object.FindObjectOfType<UnityEngine.EventSystems.EventSystem>() == null)
@@ -259,6 +364,23 @@ namespace HanabiCanvas.Editor
             Object.DestroyImmediate(buttonObj);
 
             Debug.Log($"[DrawingScreenWizard] Created prefab: {COLOR_BUTTON_PREFAB_PATH}");
+            return prefab;
+        }
+
+        private GameObject CreateThumbnailPrefab()
+        {
+            GameObject thumbnailObj = new GameObject("PatternThumbnail");
+
+            RectTransform rect = thumbnailObj.AddComponent<RectTransform>();
+            rect.sizeDelta = new Vector2(64f, 64f);
+
+            thumbnailObj.AddComponent<RawImage>();
+            thumbnailObj.AddComponent<Button>();
+
+            GameObject prefab = PrefabUtility.SaveAsPrefabAsset(thumbnailObj, THUMBNAIL_PREFAB_PATH);
+            Object.DestroyImmediate(thumbnailObj);
+
+            Debug.Log($"[DrawingScreenWizard] Created prefab: {THUMBNAIL_PREFAB_PATH}");
             return prefab;
         }
 
