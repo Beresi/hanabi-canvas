@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+// ============================================================================
+// Copyright (c) 2026 Itay Beresi. All rights reserved.
+// ============================================================================
+using UnityEngine;
 
 namespace HanabiCanvas.Runtime
 {

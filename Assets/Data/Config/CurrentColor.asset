@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d0b3c177c991b446ba7c8de9e2c5405, type: 3}
   m_Name: CurrentColor
   m_EditorClassIdentifier: HanabiCanvas.Runtime::HanabiCanvas.Runtime.ColorVariableSO
-  initialValue: {r: 0, g: 0, b: 0, a: 0}
-  runtimeValue: {r: 0, g: 0, b: 0, a: 0}
+  initialValue: {r: 1, g: 0, b: 0.65176487, a: 1}
+  runtimeValue: {r: 1, g: 0, b: 0.65176487, a: 1}

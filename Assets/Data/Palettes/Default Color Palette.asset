@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c9dab1a876024c48947afc9324a8e32, type: 3}
+  m_Name: Default Color Palette
+  m_EditorClassIdentifier: HanabiCanvas.Runtime::HanabiCanvas.Runtime.ColorPaletteSO
+  _colors:
+  - {r: 1, g: 0.2, b: 0.2, a: 1}
+  - {r: 1, g: 0.6, b: 0.1, a: 1}
+  - {r: 1, g: 1, b: 0.2, a: 1}
+  - {r: 0.2, g: 1, b: 0.3, a: 1}
+  - {r: 0.2, g: 1, b: 1, a: 1}
+  - {r: 0.3, g: 0.4, b: 1, a: 1}
+  - {r: 0.7, g: 0.3, b: 1, a: 1}
+  - {r: 1, g: 1, b: 1, a: 1}

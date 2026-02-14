@@ -11,14 +11,45 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0289fd63e089c8d4a832c5595eb0facc, type: 3}
   m_Name: Default Pattern Behaviour
-  m_EditorClassIdentifier: HanabiCanvas.Runtime::HanabiCanvas.Runtime.Firework.PatternSparkBehaviourSO
-  _convergeSpeed: 2
+  m_EditorClassIdentifier: HanabiCanvas.Runtime::HanabiCanvas.Runtime.Firework.PatternFireworkBehaviourSO
+  _convergeSpeed: 12
   _formationCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.49667358
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _holdDuration: 1.5
+  _driftSpeed: 0.3
+  _gravity: 2
+  _fadeDelay: 0.2
+  _fadeDuration: 0.8
+  _particleSize: 0.2
+  _patternScale: 0.3
+  _sizeOverLife:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -30,46 +61,6 @@ MonoBehaviour:
       value: 1
       inSlope: 0
       outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  _holdDuration: 2.5
-  _driftSpeed: 0.03
-  _gravity: 0.1
-  _fadeDelay: 0
-  _fadeDuration: 5
-  _particleSize: 0.1
-  _patternScale: 0.15
-  _sizeOverLife:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0.006668091
-      value: 0.9859772
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.47971123
-      value: 0.9834677
-      inSlope: 0.15602843
-      outSlope: 0.15602843
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: -1
-      outSlope: -1
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
@@ -84,7 +75,7 @@ MonoBehaviour:
       time: 0
       value: 1
       inSlope: 0
-      outSlope: 0
+      outSlope: -1
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
@@ -93,7 +84,7 @@ MonoBehaviour:
       time: 1
       value: 0
       inSlope: -1
-      outSlope: -1
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0

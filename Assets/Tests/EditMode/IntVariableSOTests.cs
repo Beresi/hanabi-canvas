@@ -70,7 +70,7 @@ namespace HanabiCanvas.Tests.EditMode
         public void ResetToInitial_AfterValueChanged_RestoresInitialValue()
         {
             SerializedObject so = new SerializedObject(_intVariable);
-            so.FindProperty("_initialValue").intValue = 7;
+            so.FindProperty("initialValue").intValue = 7;
             so.ApplyModifiedPropertiesWithoutUndo();
 
             _intVariable.Value = 100;
@@ -83,7 +83,7 @@ namespace HanabiCanvas.Tests.EditMode
         public void ResetToInitial_AfterValueChanged_ValueMatchesInitial()
         {
             SerializedObject so = new SerializedObject(_intVariable);
-            so.FindProperty("_initialValue").intValue = 3;
+            so.FindProperty("initialValue").intValue = 3;
             so.ApplyModifiedPropertiesWithoutUndo();
 
             _intVariable.ResetToInitial();

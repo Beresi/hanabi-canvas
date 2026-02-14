@@ -20,6 +20,9 @@ namespace HanabiCanvas.Editor
         private const string EVENT_LAUNCH_PATH = "Assets/Data/Config/OnLaunchFirework.asset";
         private const string EVENT_CLEARED_PATH = "Assets/Data/Config/OnCanvasCleared.asset";
         private const string EVENT_PHASE_CHANGED_PATH = "Assets/Data/Config/OnPhaseChanged.asset";
+        private const string COLOR_PALETTE_PATH = "Assets/Data/Palettes/Default Color Palette.asset";
+        private const string EVENT_SAVE_PATTERN_PATH = "Assets/Data/Config/OnSavePattern.asset";
+        private const string PATTERN_LIBRARY_PATH = "Assets/Data/Config/Pattern Library.asset";
 
         // ---- Private Fields ----
         private Vector2 _scrollPosition;
@@ -44,8 +47,8 @@ namespace HanabiCanvas.Editor
             EditorGUILayout.Space(8);
             EditorGUILayout.HelpBox(
                 "Creates default ScriptableObject assets for the Hanabi Canvas project.\n" +
-                "This includes a canvas config, firework behaviours, " +
-                "firework request event, and game event channels.",
+                "This includes a canvas config, color palette, firework behaviours, " +
+                "firework request event, pattern library, and game event channels.",
                 MessageType.Info);
             EditorGUILayout.Space(8);
 
@@ -53,7 +56,9 @@ namespace HanabiCanvas.Editor
             EditorGUILayout.LabelField("  - Default Canvas Config (32x32 grid)");
             EditorGUILayout.LabelField("  - 3 Firework Behaviours (Burst, Ring, Pattern)");
             EditorGUILayout.LabelField("  - Firework Request Event");
-            EditorGUILayout.LabelField("  - 3 Game Events (OnLaunchFirework, OnCanvasCleared, OnPhaseChanged)");
+            EditorGUILayout.LabelField("  - Default Color Palette (8 colors)");
+            EditorGUILayout.LabelField("  - Pattern Library");
+            EditorGUILayout.LabelField("  - 4 Game Events (OnLaunchFirework, OnCanvasCleared, OnPhaseChanged, OnSavePattern)");
             EditorGUILayout.Space(8);
 
             if (GUILayout.Button("Create Default Assets", GUILayout.Height(32)))
@@ -100,6 +105,9 @@ namespace HanabiCanvas.Editor
             CreateGameEvent(EVENT_LAUNCH_PATH, "OnLaunchFirework");
             CreateGameEvent(EVENT_CLEARED_PATH, "OnCanvasCleared");
             CreateGameEvent(EVENT_PHASE_CHANGED_PATH, "OnPhaseChanged");
+            CreateGameEvent(EVENT_SAVE_PATTERN_PATH, "OnSavePattern");
+            CreateColorPalette();
+            CreatePatternLibrary();
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
@@ -111,7 +119,8 @@ namespace HanabiCanvas.Editor
         private bool HasExistingAssets()
         {
             return AssetDatabase.LoadAssetAtPath<Object>(CANVAS_CONFIG_PATH) != null ||
-                   AssetDatabase.LoadAssetAtPath<Object>(BURST_BEHAVIOUR_PATH) != null;
+                   AssetDatabase.LoadAssetAtPath<Object>(BURST_BEHAVIOUR_PATH) != null ||
+                   AssetDatabase.LoadAssetAtPath<Object>(COLOR_PALETTE_PATH) != null;
         }
 
         private void EnsureDirectoriesExist()
@@ -119,6 +128,7 @@ namespace HanabiCanvas.Editor
             EnsureDirectory("Assets/Data");
             EnsureDirectory("Assets/Data/Config");
             EnsureDirectory("Assets/Data/Fireworks");
+            EnsureDirectory("Assets/Data/Palettes");
         }
 
         private void EnsureDirectory(string path)
@@ -167,6 +177,20 @@ namespace HanabiCanvas.Editor
 
             AssetDatabase.CreateAsset(gameEvent, path);
             LogCreated(path);
+        }
+
+        private void CreateColorPalette()
+        {
+            ColorPaletteSO palette = CreateInstance<ColorPaletteSO>();
+            AssetDatabase.CreateAsset(palette, COLOR_PALETTE_PATH);
+            LogCreated(COLOR_PALETTE_PATH);
+        }
+
+        private void CreatePatternLibrary()
+        {
+            PatternListSO library = CreateInstance<PatternListSO>();
+            AssetDatabase.CreateAsset(library, PATTERN_LIBRARY_PATH);
+            LogCreated(PATTERN_LIBRARY_PATH);
         }
 
         private void LogCreated(string path)

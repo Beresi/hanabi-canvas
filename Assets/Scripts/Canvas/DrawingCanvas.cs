@@ -1,11 +1,14 @@
-﻿using UnityEngine;
-using UnityEngine.AdaptivePerformance.Provider;
+// ============================================================================
+// Copyright (c) 2026 Itay Beresi. All rights reserved.
+// ============================================================================
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using HanabiCanvas.Runtime.Events;
 
 namespace HanabiCanvas.Runtime
 {
-    public class DrawingCanvas : MonoBehaviour, IPointerDownHandler, IDragHandler
+    public class DrawingCanvas : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
     {
         [Header("Settings")]
         [SerializeField] private DrawingCanvasConfigSO _config = default;
@@ -15,11 +18,16 @@ namespace HanabiCanvas.Runtime
         [SerializeField] private RawImage _gridBoard;
         [SerializeField] private RawImage _gridOverylay;
 
+        [Header("Events")]
+        [SerializeField] private PatternListSO _patternLibrary;
+        [SerializeField] private GameEventSO _onSavePattern;
+        [SerializeField] private GameEventSO _onCanvasCleared;
+
         private Rect _gridRect;
         private bool _isDirty = false;
         private Texture2D _texture;
+        private PointerEventData.InputButton _activeButton;
 
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
             _gridRect = _gridBoard.rectTransform.rect;
@@ -28,10 +36,28 @@ namespace HanabiCanvas.Runtime
             InitializeCanvas();
         }
 
-        // Update is called once per frame
-        void Update()
+        private void OnEnable()
         {
-        
+            if (_onSavePattern != null)
+            {
+                _onSavePattern.Register(HandleSavePattern);
+            }
+            if (_onCanvasCleared != null)
+            {
+                _onCanvasCleared.Register(HandleCanvasCleared);
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (_onSavePattern != null)
+            {
+                _onSavePattern.Unregister(HandleSavePattern);
+            }
+            if (_onCanvasCleared != null)
+            {
+                _onCanvasCleared.Unregister(HandleCanvasCleared);
+            }
         }
 
         [ContextMenu("Initialize Canvas")]
@@ -40,9 +66,8 @@ namespace HanabiCanvas.Runtime
             _texture = new Texture2D(_config.GridSize, _config.GridSize, TextureFormat.RGBA32, false);
             _texture.filterMode = FilterMode.Point;
 
-            // Fill with white (or whatever default)
             Color[] pixels = new Color[_config.GridSize * _config.GridSize];
-            for (int i = 0; i < pixels.Length; i++) pixels[i] = _config.BackgroundColor;
+            for (int i = 0; i < pixels.Length; i++) pixels[i] = Color.clear;
             _texture.SetPixels(pixels);
             _texture.Apply();
 
@@ -102,20 +127,35 @@ namespace HanabiCanvas.Runtime
             int px = Mathf.Clamp(Mathf.FloorToInt(u * gridSize), 0, gridSize - 1);
             int py = Mathf.Clamp(Mathf.FloorToInt(v * gridSize), 0, gridSize - 1);
 
-            if (_texture.GetPixel(px, py) == _currentColor.Value)
-                return;
+            if (_activeButton == PointerEventData.InputButton.Right)
+            {
+                if (_texture.GetPixel(px, py) == Color.clear)
+                    return;
 
-            _texture.SetPixel(px, py, _currentColor.Value);
+                _texture.SetPixel(px, py, Color.clear);
+            }
+            else
+            {
+                if (_texture.GetPixel(px, py) == _currentColor.Value)
+                    return;
+
+                _texture.SetPixel(px, py, _currentColor.Value);
+            }
+
             _isDirty = true;
         }
 
-        public void EraseCell()
+        public void OnPointerDown(PointerEventData eventData)
         {
-
+            _activeButton = eventData.button;
+            Paint(eventData);
         }
 
-        public void OnPointerDown(PointerEventData eventData) => Paint(eventData);
+        public void OnPointerUp(PointerEventData eventData)
+        {
+        }
 
+        public void OnDrag(PointerEventData eventData) => Paint(eventData);
 
         private void LateUpdate()
         {
@@ -125,6 +165,49 @@ namespace HanabiCanvas.Runtime
             _isDirty = false;
         }
 
-        public void OnDrag(PointerEventData eventData) => Paint(eventData);
+        /// <summary>
+        /// Reads the canvas texture and returns a FireworkPattern containing all non-transparent pixels.
+        /// </summary>
+        public FireworkPattern GetFireworkPattern()
+        {
+            int gridSize = _config.GridSize;
+            Color32[] raw = _texture.GetPixels32();
+            int count = 0;
+
+            for (int i = 0; i < raw.Length; i++)
+            {
+                if (raw[i].a > 0) count++;
+            }
+
+            PixelEntry[] entries = new PixelEntry[count];
+            int idx = 0;
+            for (int i = 0; i < raw.Length; i++)
+            {
+                if (raw[i].a > 0)
+                {
+                    byte x = (byte)(i % gridSize);
+                    byte y = (byte)(i / gridSize);
+                    entries[idx] = new PixelEntry(x, y, raw[i]);
+                    idx++;
+                }
+            }
+
+            return new FireworkPattern
+            {
+                Pixels = entries,
+                Width = gridSize,
+                Height = gridSize,
+            };
+        }
+
+        private void HandleSavePattern()
+        {
+            _patternLibrary.Add(GetFireworkPattern());
+        }
+
+        private void HandleCanvasCleared()
+        {
+            InitializeCanvas();
+        }
     }
 }

@@ -1,0 +1,14 @@
+// ============================================================================
+// Copyright (c) 2026 Itay Beresi. All rights reserved.
+// ============================================================================
+using UnityEngine;
+
+namespace HanabiCanvas.Runtime
+{
+    [CreateAssetMenu(
+        fileName = "New Pattern Library",
+        menuName = "Hanabi Canvas/Lists/Pattern Library")]
+    public class PatternListSO : ListSO<FireworkPattern>
+    {
+    }
+}
