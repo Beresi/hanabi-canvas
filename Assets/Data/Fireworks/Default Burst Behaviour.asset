@@ -12,15 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c1a15213cac9ee47be88ea039ad304c, type: 3}
   m_Name: Default Burst Behaviour
   m_EditorClassIdentifier: HanabiCanvas.Runtime::HanabiCanvas.Runtime.Firework.BurstFireworkBehaviourSO
+  _effects:
+  - {fileID: 11400000, guid: 0c02caff05b247240ac780b46c5ba963, type: 2}
+  - {fileID: 11400000, guid: eda6c4ee3ec9de24bb066a3d49bc7003, type: 2}
   _particleCount: 200
-  _burstSpeed: 8
-  _burstSpeedVariance: 0.3
+  _burstSpeed: 32.57
+  _burstSpeedVariance: 0.72
   _burstExtentMultiplier: 0.6
-  _gravity: 4
+  _gravity: 2
   _drag: 0.98
-  _lifetime: 2
+  _lifetime: 4
   _lifetimeVariance: 0.2
-  _particleSize: 0.15
+  _particleSize: 0.27
   _sizeOverLife:
     serializedVersion: 2
     m_Curve:

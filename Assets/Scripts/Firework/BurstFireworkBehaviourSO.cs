@@ -162,6 +162,8 @@ namespace HanabiCanvas.Runtime.Firework
                 particles[i].Size = _particleSize;
                 particles[i].Life = life;
                 particles[i].MaxLife = life;
+                particles[i].RandomSeed = Random.value;
+                particles[i].BaseColor = particles[i].Color;
             }
         }
 

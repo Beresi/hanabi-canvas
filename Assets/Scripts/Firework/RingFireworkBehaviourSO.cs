@@ -199,6 +199,8 @@ namespace HanabiCanvas.Runtime.Firework
                 float life = _lifetime * Random.Range(1f - _lifetimeVariance, 1f + _lifetimeVariance);
                 particles[i].Life = life;
                 particles[i].MaxLife = life;
+                particles[i].RandomSeed = Random.value;
+                particles[i].BaseColor = particles[i].Color;
             }
         }
 

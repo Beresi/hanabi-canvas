@@ -44,6 +44,12 @@ namespace HanabiCanvas.Runtime.Firework
         private int _totalParticleCount;
         private bool _isPlaying;
 
+        // Per-behaviour elapsed time for effects
+        private float[] _behaviourElapsedTimes;
+
+        // Cached trail effect per behaviour (null if no trail on that behaviour)
+        private TrailEffectSO[] _behaviourTrailEffects;
+
         // Mesh
         private Mesh _mesh;
         private MeshFilter _meshFilter;
@@ -101,10 +107,57 @@ namespace HanabiCanvas.Runtime.Firework
             {
                 if (_behaviours[b] != null && _behaviourParticleCounts[b] > 0)
                 {
+                    // Undo previous gravity displacement before behaviour runs.
+                    // This ensures behaviours that set Position absolutely (Pattern) or
+                    // accumulate from Velocity (Burst) both start from a clean position.
+                    int preCount = _behaviourParticleCounts[b];
+                    FireworkParticle[] preParticles = _behaviourParticles[b];
+                    for (int i = 0; i < preCount; i++)
+                    {
+                        if (preParticles[i].Life <= 0f)
+                        {
+                            continue;
+                        }
+
+                        preParticles[i].Position.y += preParticles[i].GravityDisplacementY;
+                    }
+
                     _behaviours[b].UpdateParticles(
                         _behaviourParticles[b],
                         _behaviourParticleCounts[b],
                         dt);
+
+                    // Reset Color.rgb to BaseColor before effects run.
+                    // Behaviours only set alpha each frame; without this reset,
+                    // multiplicative effects (e.g. emissive glow) would compound RGB.
+                    int count = _behaviourParticleCounts[b];
+                    FireworkParticle[] particles = _behaviourParticles[b];
+                    for (int i = 0; i < count; i++)
+                    {
+                        if (particles[i].Life <= 0f)
+                        {
+                            continue;
+                        }
+
+                        Color bc = particles[i].BaseColor;
+                        particles[i].Color = new Color(
+                            bc.r, bc.g, bc.b, particles[i].Color.a);
+                    }
+
+                    _behaviourElapsedTimes[b] += dt;
+
+                    FireworkEffectSO[] effects = _behaviours[b].Effects;
+                    if (effects != null && effects.Length > 0)
+                    {
+                        for (int e = 0; e < effects.Length; e++)
+                        {
+                            effects[e].UpdateEffect(
+                                _behaviourParticles[b],
+                                _behaviourParticleCounts[b],
+                                dt,
+                                _behaviourElapsedTimes[b]);
+                        }
+                    }
                 }
             }
 
@@ -177,7 +230,45 @@ namespace HanabiCanvas.Runtime.Firework
                 }
 
                 _behaviours[b].InitializeParticles(_behaviourParticles[b], count, request);
+
+                // Initialize effects for this behaviour
+                FireworkEffectSO[] effects = _behaviours[b].Effects;
+                if (effects != null && effects.Length > 0)
+                {
+                    for (int e = 0; e < effects.Length; e++)
+                    {
+                        effects[e].InitializeEffect(_behaviourParticles[b], count);
+                    }
+                }
+
                 _totalParticleCount += count;
+            }
+
+            // Allocate elapsed time and trail cache arrays
+            int bCount = _behaviours.Length;
+            if (_behaviourElapsedTimes == null || _behaviourElapsedTimes.Length != bCount)
+            {
+                _behaviourElapsedTimes = new float[bCount];
+                _behaviourTrailEffects = new TrailEffectSO[bCount];
+            }
+
+            for (int b = 0; b < bCount; b++)
+            {
+                _behaviourElapsedTimes[b] = 0f;
+                _behaviourTrailEffects[b] = null;
+
+                FireworkEffectSO[] fx = _behaviours[b].Effects;
+                if (fx != null && fx.Length > 0)
+                {
+                    for (int e = 0; e < fx.Length; e++)
+                    {
+                        if (fx[e] is TrailEffectSO trail)
+                        {
+                            _behaviourTrailEffects[b] = trail;
+                            break;
+                        }
+                    }
+                }
             }
 
             if (_totalParticleCount == 0)
@@ -295,6 +386,7 @@ namespace HanabiCanvas.Runtime.Firework
             Transform cameraTransform = _camera.transform;
             Vector3 cameraRight = cameraTransform.right;
             Vector3 cameraUp = cameraTransform.up;
+            Vector3 cameraForward = cameraTransform.forward;
 
             int globalIndex = 0;
 
@@ -302,6 +394,9 @@ namespace HanabiCanvas.Runtime.Firework
             {
                 int count = _behaviourParticleCounts[b];
                 FireworkParticle[] particles = _behaviourParticles[b];
+                TrailEffectSO trailEffect = _behaviourTrailEffects != null && b < _behaviourTrailEffects.Length
+                    ? _behaviourTrailEffects[b]
+                    : null;
 
                 for (int i = 0; i < count; i++)
                 {
@@ -323,14 +418,48 @@ namespace HanabiCanvas.Runtime.Firework
                     }
 
                     float halfSize = particles[i].Size * 0.5f;
-                    Vector3 right = cameraRight * halfSize;
-                    Vector3 up = cameraUp * halfSize;
                     Vector3 pos = particles[i].Position;
+                    bool didTrail = false;
 
-                    _vertices[vertBase + 0] = pos - right - up;
-                    _vertices[vertBase + 1] = pos + right - up;
-                    _vertices[vertBase + 2] = pos + right + up;
-                    _vertices[vertBase + 3] = pos - right + up;
+                    if (trailEffect != null)
+                    {
+                        Vector3 velocity = particles[i].Velocity;
+                        float speed = velocity.magnitude;
+
+                        if (speed > trailEffect.MinVelocityThreshold)
+                        {
+                            Vector3 velocityDir = velocity / speed;
+                            Vector3 projectedDir = velocityDir
+                                - Vector3.Dot(velocityDir, cameraForward) * cameraForward;
+                            float projMag = projectedDir.magnitude;
+
+                            if (projMag > 0.001f)
+                            {
+                                projectedDir /= projMag;
+                                Vector3 perpDir = Vector3.Cross(projectedDir, cameraForward);
+
+                                float stretchAmount = speed * trailEffect.StretchMultiplier;
+                                if (stretchAmount > trailEffect.MaxStretchLength)
+                                {
+                                    stretchAmount = trailEffect.MaxStretchLength;
+                                }
+
+                                Vector3 right = perpDir * halfSize;
+                                Vector3 up = projectedDir * (halfSize + stretchAmount);
+
+                                _vertices[vertBase + 0] = pos - right - up;
+                                _vertices[vertBase + 1] = pos + right - up;
+                                _vertices[vertBase + 2] = pos + right + up;
+                                _vertices[vertBase + 3] = pos - right + up;
+                                didTrail = true;
+                            }
+                        }
+                    }
+
+                    if (!didTrail)
+                    {
+                        BuildBillboardQuad(vertBase, pos, halfSize, cameraRight, cameraUp);
+                    }
 
                     Color color = particles[i].Color;
                     _colors[vertBase + 0] = color;
@@ -351,6 +480,18 @@ namespace HanabiCanvas.Runtime.Firework
 
             _mesh.vertices = _vertices;
             _mesh.colors = _colors;
+        }
+
+        private void BuildBillboardQuad(int vertBase, Vector3 pos, float halfSize,
+            Vector3 cameraRight, Vector3 cameraUp)
+        {
+            Vector3 right = cameraRight * halfSize;
+            Vector3 up = cameraUp * halfSize;
+
+            _vertices[vertBase + 0] = pos - right - up;
+            _vertices[vertBase + 1] = pos + right - up;
+            _vertices[vertBase + 2] = pos + right + up;
+            _vertices[vertBase + 3] = pos - right + up;
         }
     }
 }

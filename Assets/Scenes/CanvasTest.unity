@@ -299,6 +299,9 @@ MonoBehaviour:
   _currentColor: {fileID: 11400000, guid: f7b1cbc31aa006f4993bcbc612595339, type: 2}
   _gridBoard: {fileID: 81696135}
   _gridOverylay: {fileID: 113122433}
+  _patternLibrary: {fileID: 11400000, guid: d3cff528b6ad109438bd25b062787e2c, type: 2}
+  _onSavePattern: {fileID: 11400000, guid: 3cbee28ef698f0447926961c604c6abd, type: 2}
+  _onCanvasCleared: {fileID: 11400000, guid: 2b423a7b804bd2e4d912a258a2276f23, type: 2}
 --- !u!114 &134175311
 MonoBehaviour:
   m_ObjectHideFlags: 0

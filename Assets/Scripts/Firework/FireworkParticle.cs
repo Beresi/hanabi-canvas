@@ -34,5 +34,14 @@ namespace HanabiCanvas.Runtime.Firework
 
         /// <summary>Target position for lerp-based behaviours (e.g., pattern formation).</summary>
         public Vector3 TargetPosition;
+
+        /// <summary>Per-particle random value (0-1), set once at initialization for deterministic effects.</summary>
+        public float RandomSeed;
+
+        /// <summary>Original particle color, preserved for effects that shift color over lifetime.</summary>
+        public Color BaseColor;
+
+        /// <summary>Cumulative downward displacement applied by gravity effect, for undo/reapply.</summary>
+        public float GravityDisplacementY;
     }
 }

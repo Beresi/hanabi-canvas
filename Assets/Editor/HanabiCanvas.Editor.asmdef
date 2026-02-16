@@ -3,7 +3,8 @@
     "rootNamespace": "HanabiCanvas.Editor",
     "references": [
         "HanabiCanvas.Runtime",
-        "Unity.ugui"
+        "Unity.ugui",
+        "Unity.RenderPipelines.Core.Runtime"
     ],
     "includePlatforms": [
         "Editor"

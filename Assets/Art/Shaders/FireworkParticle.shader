@@ -3,6 +3,7 @@ Shader "HanabiCanvas/FireworkParticle"
     Properties
     {
         _MainTex ("Particle Texture", 2D) = "white" {}
+        _EmissiveMultiplier ("Emissive Multiplier", Float) = 1.0
     }
 
     SubShader
@@ -32,6 +33,7 @@ Shader "HanabiCanvas/FireworkParticle"
 
             TEXTURE2D(_MainTex);
             SAMPLER(sampler_MainTex);
+            float _EmissiveMultiplier;
 
             struct Attributes
             {
@@ -67,7 +69,7 @@ Shader "HanabiCanvas/FireworkParticle"
                 float alpha = saturate(1.0 - dist * dist);
             #endif
 
-                half4 color = half4(input.color.rgb * alpha * input.color.a, alpha * input.color.a);
+                half4 color = half4(input.color.rgb * alpha * input.color.a * _EmissiveMultiplier, alpha * input.color.a);
                 return color;
             }
             ENDHLSL

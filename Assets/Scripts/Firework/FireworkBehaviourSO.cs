@@ -12,6 +12,13 @@ namespace HanabiCanvas.Runtime.Firework
     /// </summary>
     public abstract class FireworkBehaviourSO : ScriptableObject
     {
+        [Header("Effects")]
+        [Tooltip("Composable effects applied after behaviour update each frame")]
+        [SerializeField] private FireworkEffectSO[] _effects;
+
+        /// <summary>Composable effects attached to this behaviour.</summary>
+        public FireworkEffectSO[] Effects => _effects;
+
         /// <summary>
         /// Returns how many particles this behaviour needs for the given request.
         /// </summary>

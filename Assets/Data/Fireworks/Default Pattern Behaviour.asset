@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0289fd63e089c8d4a832c5595eb0facc, type: 3}
   m_Name: Default Pattern Behaviour
   m_EditorClassIdentifier: HanabiCanvas.Runtime::HanabiCanvas.Runtime.Firework.PatternFireworkBehaviourSO
-  _convergeSpeed: 12
+  _effects:
+  - {fileID: 11400000, guid: 0c02caff05b247240ac780b46c5ba963, type: 2}
+  - {fileID: 11400000, guid: 6ffa778c3a235c642a19ad96c6bd3c9d, type: 2}
+  - {fileID: 11400000, guid: 55848e163aaa6704ebbbc69b399bfb43, type: 2}
+  _convergeSpeed: 5
   _formationCurve:
     serializedVersion: 2
     m_Curve:
@@ -37,11 +41,11 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _holdDuration: 1.5
-  _driftSpeed: 0.3
+  _holdDuration: 5
+  _driftSpeed: 0
   _gravity: 2
   _fadeDelay: 0.2
-  _fadeDuration: 0.8
+  _fadeDuration: 3
   _particleSize: 0.2
   _patternScale: 0.3
   _sizeOverLife:
@@ -75,16 +79,16 @@ MonoBehaviour:
       time: 0
       value: 1
       inSlope: 0
-      outSlope: -1
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 1
-      value: 0
+      time: 1.1066589
+      value: 0.4814453
       inSlope: -1
-      outSlope: 0
+      outSlope: -1
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
