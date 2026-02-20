@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: HanabiCanvas.Runtime::HanabiCanvas.Runtime.DrawingCanvasConfigSO
   _gridSize: 16
   _borderThickness: 4
-  _gridColor: {r: 0.2679245, g: 0.2679245, b: 0.2679245, a: 1}
+  _gridColor: {r: 0.7019608, g: 0.52156866, b: 0.29803923, a: 1}
   _backgroundColor: {r: 0.10943389, g: 0.07247414, b: 0.07247414, a: 1}
