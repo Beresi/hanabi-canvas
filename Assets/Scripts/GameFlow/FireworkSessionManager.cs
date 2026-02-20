@@ -11,7 +11,8 @@ using HanabiCanvas.Runtime.CameraSystem;
 namespace HanabiCanvas.Runtime.GameFlow
 {
     /// <summary>
-    /// Manages the firework session cycle: Drawing -> Launching -> Watching -> Resetting -> Drawing.
+    /// Manages the firework session cycle: Drawing -> Launching -> Ascending -> Watching -> Resetting -> Drawing.
+    /// The Ascending state is used when the rocket system is enabled; otherwise it is skipped.
     /// Listens for the launch event, constructs a <see cref="FireworkRequest"/> from pixel data,
     /// manages camera transitions, and resets the canvas after the firework completes.
     /// All cross-system communication uses SO channels — no direct MonoBehaviour references.
@@ -55,6 +56,16 @@ namespace HanabiCanvas.Runtime.GameFlow
 
         [Tooltip("Raised to clear the canvas grid on reset")]
         [SerializeField] private GameEventSO _onCanvasCleared;
+
+        [Header("Rocket System")]
+        [Tooltip("Whether the rocket launch system is active")]
+        [SerializeField] private BoolVariableSO _isRocketEnabled;
+
+        [Tooltip("Whether a rocket is currently ascending — written by RocketController")]
+        [SerializeField] private BoolVariableSO _isRocketAscending;
+
+        [Tooltip("Raised to request a rocket launch (intercepted by RocketController)")]
+        [SerializeField] private FireworkRequestEventSO _onRocketLaunchRequested;
 
         // ---- Private Fields ----
         private GameState _currentState;
@@ -106,6 +117,9 @@ namespace HanabiCanvas.Runtime.GameFlow
                     break;
                 case GameState.Launching:
                     UpdateLaunchingState();
+                    break;
+                case GameState.Ascending:
+                    UpdateAscendingState();
                     break;
                 case GameState.Watching:
                     UpdateWatchingState();
@@ -181,7 +195,14 @@ namespace HanabiCanvas.Runtime.GameFlow
                 PatternHeight = _canvasConfig != null ? _canvasConfig.GridHeight : 32
             };
 
-            if (_onFireworkRequested != null)
+            // Check if rocket system is enabled
+            bool isRocketEnabled = _isRocketEnabled != null && _isRocketEnabled.Value;
+
+            if (isRocketEnabled && _onRocketLaunchRequested != null)
+            {
+                _onRocketLaunchRequested.Raise(request);
+            }
+            else if (_onFireworkRequested != null)
             {
                 _onFireworkRequested.Raise(request);
             }
@@ -194,6 +215,26 @@ namespace HanabiCanvas.Runtime.GameFlow
                 _cameraController.TransitionToSkyView();
             }
 
+            // Transition to Ascending if rocket enabled, otherwise Watching
+            if (isRocketEnabled)
+            {
+                TransitionTo(GameState.Ascending);
+            }
+            else
+            {
+                TransitionTo(GameState.Watching);
+            }
+        }
+
+        private void UpdateAscendingState()
+        {
+            // Wait for rocket to finish ascending
+            if (_isRocketAscending != null && _isRocketAscending.Value)
+            {
+                return;
+            }
+
+            // Rocket has arrived — firework is now playing
             TransitionTo(GameState.Watching);
         }
 
@@ -310,7 +351,10 @@ namespace HanabiCanvas.Runtime.GameFlow
             Transform fireworkSpawnPoint,
             GameEventSO onLaunchFirework,
             FireworkRequestEventSO onFireworkRequested,
-            GameEventSO onCanvasCleared)
+            GameEventSO onCanvasCleared,
+            BoolVariableSO isRocketEnabled = null,
+            BoolVariableSO isRocketAscending = null,
+            FireworkRequestEventSO onRocketLaunchRequested = null)
         {
             _pixelData = pixelData;
             _canvasConfig = canvasConfig;
@@ -322,6 +366,9 @@ namespace HanabiCanvas.Runtime.GameFlow
             _onLaunchFirework = onLaunchFirework;
             _onFireworkRequested = onFireworkRequested;
             _onCanvasCleared = onCanvasCleared;
+            _isRocketEnabled = isRocketEnabled;
+            _isRocketAscending = isRocketAscending;
+            _onRocketLaunchRequested = onRocketLaunchRequested;
         }
     }
 }

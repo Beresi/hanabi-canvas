@@ -1208,6 +1208,114 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 170857849}
   m_CullTransparentMesh: 1
+--- !u!1 &211053841
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 211053845}
+  - component: {fileID: 211053844}
+  - component: {fileID: 211053843}
+  - component: {fileID: 211053842}
+  m_Layer: 0
+  m_Name: RocketManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &211053842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 211053841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 984e0aa70f988534fae373475a433b4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: HanabiCanvas.Runtime::HanabiCanvas.Runtime.Firework.RocketController
+  _rocketConfig: {fileID: 11400000, guid: 2532b9db1d030c3498cf6a01ef973fe9, type: 2}
+  _onRocketLaunchRequested: {fileID: 11400000, guid: 73901dcf3aed69c4eacd16a2ec81f15a, type: 2}
+  _onFireworkRequested: {fileID: 11400000, guid: 599eaea6fd365f442b9e519b8a89cb21, type: 2}
+  _isRocketAscending: {fileID: 11400000, guid: 68a0c298eacaee7418d779a64d1a3bca, type: 2}
+  _rocketMaterial: {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
+--- !u!23 &211053843
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 211053841}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &211053844
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 211053841}
+  m_Mesh: {fileID: 0}
+--- !u!4 &211053845
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 211053841}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.63774, y: 0, z: -14.1883}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &235504956
 GameObject:
   m_ObjectHideFlags: 0
@@ -1508,10 +1616,10 @@ RectTransform:
   - {fileID: 66369815}
   m_Father: {fileID: 1999848112}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 410.7246, y: -393.461}
+  m_SizeDelta: {x: 791.4492, y: 139.3844}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &268611556
 MonoBehaviour:
@@ -1764,10 +1872,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1999848112}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 410.7246, y: -722.3398}
+  m_SizeDelta: {x: 791.4492, y: 179.6044}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &414959965
 MonoBehaviour:
@@ -2743,8 +2851,8 @@ MonoBehaviour:
   _onSlideshowComplete: {fileID: 11400000, guid: 203ebd57093c6fb479f1325d34f8078e, type: 2}
   _onSlideshowExitRequested: {fileID: 11400000, guid: 20dfe0e761afa7a498cec3736f7e8eaa, type: 2}
   _onArtworkLiked: {fileID: 11400000, guid: 0dc681ba1c497a9428abd1c024e2d497, type: 2}
-  _progressText: {fileID: 1735294023}
-  _artworkNameText: {fileID: 888101790}
+  _progressText: {fileID: 0}
+  _artworkNameText: {fileID: 0}
   _skipButton: {fileID: 967182804}
   _exitButton: {fileID: 160127785}
   _likeButton: {fileID: 127960950}
@@ -3064,10 +3172,10 @@ RectTransform:
   - {fileID: 1092025394}
   m_Father: {fileID: 1999848112}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 410.7246, y: -239.0766}
+  m_SizeDelta: {x: 791.4492, y: 139.3844}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &812696989
 MonoBehaviour:
@@ -4241,6 +4349,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1190587845}
   - component: {fileID: 1190587844}
+  - component: {fileID: 1190587846}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -4314,6 +4423,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1190587846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1190587843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalCameraData
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_TaaSettings:
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
+  m_Version: 2
 --- !u!1 &1229704990
 GameObject:
   m_ObjectHideFlags: 0
@@ -4428,8 +4581,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 38b67ba0159484745adcaae21c85ea3f, type: 2}
   - {fileID: 11400000, guid: 61e4f63f3dc892d4d89dadcdb619fdf3, type: 2}
   _onFireworkRequested: {fileID: 11400000, guid: 599eaea6fd365f442b9e519b8a89cb21, type: 2}
-  _isFireworkPlaying: {fileID: 0}
-  _onFireworkComplete: {fileID: 0}
+  _isFireworkPlaying: {fileID: 11400000, guid: 0eaffac23d20ce44284d7b98aa02bc1d, type: 2}
+  _onFireworkComplete: {fileID: 11400000, guid: 9466bedde70cf4f4cadd0441fb4acef3, type: 2}
   _particleMaterial: {fileID: 2100000, guid: 0f2a82af683d71742a3e209e4e796b12, type: 2}
 --- !u!23 &1295369012
 MeshRenderer:
@@ -4616,10 +4769,10 @@ RectTransform:
   - {fileID: 119604314}
   m_Father: {fileID: 1999848112}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 410.7246, y: -84.6922}
+  m_SizeDelta: {x: 791.4492, y: 139.3844}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1302420939
 MonoBehaviour:
@@ -4952,9 +5105,9 @@ MonoBehaviour:
   _filledPixelCount: {fileID: 11400000, guid: 9f6ed5379b9f4464981690965aa43edb, type: 2}
   _onPixelPainted: {fileID: 11400000, guid: a842e79f4392e9e4eb144bd613682ff7, type: 2}
   _onConstraintViolated: {fileID: 11400000, guid: 1d25da21937ba6a4086705fe6d2bc628, type: 2}
-  _timerText: {fileID: 654438229}
-  _colorCountText: {fileID: 836764127}
-  _pixelCountText: {fileID: 1297090737}
+  _timerText: {fileID: 0}
+  _colorCountText: {fileID: 0}
+  _pixelCountText: {fileID: 0}
   _warningFlash: {fileID: 142581700}
   _normalTimerColor: {r: 1, g: 1, b: 1, a: 1}
   _warningTimerColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
@@ -5000,6 +5153,8 @@ MonoBehaviour:
   _onSlideshowArtworkStarted: {fileID: 11400000, guid: 5c24031e97b30b945915ed88ac3ae6bc, type: 2}
   _slideshowCurrentIndex: {fileID: 11400000, guid: 013dbd1f2f9b6de49bf79415997877ac, type: 2}
   _slideshowTotalCount: {fileID: 11400000, guid: 834f82e2e257ace4b906b9ae938d84c2, type: 2}
+  _isRocketEnabled: {fileID: 0}
+  _onRocketLaunchRequested: {fileID: 0}
 --- !u!4 &1465511506
 Transform:
   m_ObjectHideFlags: 0
@@ -5065,8 +5220,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: HanabiCanvas.Runtime::HanabiCanvas.Runtime.UI.ConfirmationDialog
   _panel: {fileID: 1068006532}
-  _titleText: {fileID: 831429776}
-  _messageText: {fileID: 842759292}
+  _titleText: {fileID: 0}
+  _messageText: {fileID: 0}
   _confirmButton: {fileID: 622814458}
   _cancelButton: {fileID: 703944821}
 --- !u!1 &1647495238
@@ -5087,7 +5242,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1647495239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5557,10 +5712,10 @@ RectTransform:
   - {fileID: 393574596}
   m_Father: {fileID: 1999848112}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 410.7246, y: -547.8454}
+  m_SizeDelta: {x: 791.4492, y: 139.3844}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1925932035
 MonoBehaviour:
@@ -5752,7 +5907,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84614388202ef4e4a873b09a960003e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: HanabiCanvas.Runtime::HanabiCanvas.Runtime.Firework.FireworkTestTrigger
-  _onFireworkRequested: {fileID: 11400000, guid: 599eaea6fd365f442b9e519b8a89cb21, type: 2}
+  _onFireworkRequested: {fileID: 11400000, guid: 73901dcf3aed69c4eacd16a2ec81f15a, type: 2}
   _spawnPoint: {fileID: 961474620}
   _pixelData: {fileID: 11400000, guid: d38c5bda4d2a47b478b38f4b7fa89ede, type: 2}
 --- !u!4 &1946053680
@@ -6183,8 +6338,8 @@ MonoBehaviour:
   _importButton: {fileID: 441083203}
   _backButton: {fileID: 1057636771}
   _volumeSlider: {fileID: 240201689}
-  _importJsonField: {fileID: 490048746}
-  _statusText: {fileID: 560512696}
+  _importJsonField: {fileID: 0}
+  _statusText: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -6199,3 +6354,4 @@ SceneRoots:
   - {fileID: 1887236139}
   - {fileID: 1647495242}
   - {fileID: 1389147655}
+  - {fileID: 211053845}

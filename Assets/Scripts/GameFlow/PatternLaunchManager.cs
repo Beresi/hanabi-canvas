@@ -21,6 +21,7 @@ namespace HanabiCanvas.Runtime.GameFlow
         {
             Idle,
             Launching,
+            Ascending,
             Watching,
             Resetting
         }
@@ -45,6 +46,16 @@ namespace HanabiCanvas.Runtime.GameFlow
 
         [Header("Firework Spawn")]
         [SerializeField] private Transform _fireworkSpawnPoint;
+
+        [Header("Rocket System")]
+        [Tooltip("Whether the rocket launch system is active")]
+        [SerializeField] private BoolVariableSO _isRocketEnabled;
+
+        [Tooltip("Whether a rocket is currently ascending")]
+        [SerializeField] private BoolVariableSO _isRocketAscending;
+
+        [Tooltip("Raised to request a rocket launch")]
+        [SerializeField] private FireworkRequestEventSO _onRocketLaunchRequested;
 
         [Header("UI")]
         [SerializeField] private GameObject _drawingScreen;
@@ -80,6 +91,9 @@ namespace HanabiCanvas.Runtime.GameFlow
                     break;
                 case LaunchState.Launching:
                     UpdateLaunching();
+                    break;
+                case LaunchState.Ascending:
+                    UpdateAscending();
                     break;
                 case LaunchState.Watching:
                     UpdateWatching();
@@ -140,7 +154,14 @@ namespace HanabiCanvas.Runtime.GameFlow
                 PatternHeight = pattern.Height
             };
 
-            if (_onFireworkRequested != null)
+            // Check if rocket system is enabled
+            bool isRocketEnabled = _isRocketEnabled != null && _isRocketEnabled.Value;
+
+            if (isRocketEnabled && _onRocketLaunchRequested != null)
+            {
+                _onRocketLaunchRequested.Raise(request);
+            }
+            else if (_onFireworkRequested != null)
             {
                 _onFireworkRequested.Raise(request);
             }
@@ -157,6 +178,26 @@ namespace HanabiCanvas.Runtime.GameFlow
                 _cameraController.TransitionToSkyView();
             }
 
+            // Transition to Ascending if rocket enabled, otherwise Watching
+            if (isRocketEnabled)
+            {
+                _currentState = LaunchState.Ascending;
+            }
+            else
+            {
+                _currentState = LaunchState.Watching;
+            }
+        }
+
+        private void UpdateAscending()
+        {
+            // Wait for rocket to finish ascending
+            if (_isRocketAscending != null && _isRocketAscending.Value)
+            {
+                return;
+            }
+
+            // Rocket has arrived — transition to watching firework
             _currentState = LaunchState.Watching;
         }
 

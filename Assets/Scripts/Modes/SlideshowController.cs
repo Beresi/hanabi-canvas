@@ -3,6 +3,7 @@
 // ============================================================================
 using System.Collections.Generic;
 using UnityEngine;
+using HanabiCanvas.Runtime;
 using HanabiCanvas.Runtime.Events;
 using HanabiCanvas.Runtime.Firework;
 using HanabiCanvas.Runtime.Persistence;
@@ -68,6 +69,13 @@ namespace HanabiCanvas.Runtime.Modes
 
         [Tooltip("Total number of artworks in the slideshow")]
         [SerializeField] private IntVariableSO _slideshowTotalCount;
+
+        [Header("Rocket System")]
+        [Tooltip("Whether the rocket launch system is active")]
+        [SerializeField] private BoolVariableSO _isRocketEnabled;
+
+        [Tooltip("Raised to request a rocket launch")]
+        [SerializeField] private FireworkRequestEventSO _onRocketLaunchRequested;
 
         // ---- Private Fields ----
         private SlideshowState _currentState;
@@ -210,7 +218,9 @@ namespace HanabiCanvas.Runtime.Modes
             GameEventSO onSlideshowComplete,
             ArtworkEventSO onSlideshowArtworkStarted,
             IntVariableSO slideshowCurrentIndex,
-            IntVariableSO slideshowTotalCount)
+            IntVariableSO slideshowTotalCount,
+            BoolVariableSO isRocketEnabled = null,
+            FireworkRequestEventSO onRocketLaunchRequested = null)
         {
             _slideshowConfig = slideshowConfig;
             _dataManager = dataManager;
@@ -224,6 +234,8 @@ namespace HanabiCanvas.Runtime.Modes
             _onSlideshowArtworkStarted = onSlideshowArtworkStarted;
             _slideshowCurrentIndex = slideshowCurrentIndex;
             _slideshowTotalCount = slideshowTotalCount;
+            _isRocketEnabled = isRocketEnabled;
+            _onRocketLaunchRequested = onRocketLaunchRequested;
         }
 
         // ---- Private Methods ----
@@ -263,7 +275,14 @@ namespace HanabiCanvas.Runtime.Modes
                 PatternHeight = artwork.Height
             };
 
-            if (_onFireworkRequested != null)
+            // Check if rocket system is enabled
+            bool isRocketEnabled = _isRocketEnabled != null && _isRocketEnabled.Value;
+
+            if (isRocketEnabled && _onRocketLaunchRequested != null)
+            {
+                _onRocketLaunchRequested.Raise(request);
+            }
+            else if (_onFireworkRequested != null)
             {
                 _onFireworkRequested.Raise(request);
             }

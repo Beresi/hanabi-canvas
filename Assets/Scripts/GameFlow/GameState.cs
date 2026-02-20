@@ -12,8 +12,11 @@ namespace HanabiCanvas.Runtime.GameFlow
         /// <summary>Player is drawing on the pixel canvas.</summary>
         Drawing,
 
-        /// <summary>Firework is ascending after launch.</summary>
+        /// <summary>System is constructing and dispatching the launch request.</summary>
         Launching,
+
+        /// <summary>Rocket is ascending toward its destination before exploding.</summary>
+        Ascending,
 
         /// <summary>Firework has exploded; player is watching the display.</summary>
         Watching,
