@@ -5,6 +5,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using HanabiCanvas.Runtime;
+using HanabiCanvas.Runtime.Events;
 
 namespace HanabiCanvas.Runtime.Firework
 {
@@ -31,6 +32,13 @@ namespace HanabiCanvas.Runtime.Firework
         [Header("Shared Variables")]
         [Tooltip("Written true when playing, false when complete — read by FireworkSessionManager")]
         [SerializeField] private BoolVariableSO _isFireworkPlaying;
+
+        /// <summary>
+        /// Event raised when all behaviours have completed and the request queue is empty.
+        /// Listened by GameFlowController, SlideshowController, and UI systems.
+        /// </summary>
+        [Tooltip("Raised when all behaviours complete and request queue is empty")]
+        [SerializeField] private GameEventSO _onFireworkComplete;
 
         [Header("Rendering")]
         [Tooltip("Material using HanabiCanvas/FireworkParticle shader (additive)")]
@@ -315,6 +323,13 @@ namespace HanabiCanvas.Runtime.Firework
             if (_requestQueue.Count > 0)
             {
                 StartFirework(_requestQueue.Dequeue());
+            }
+            else
+            {
+                if (_onFireworkComplete != null)
+                {
+                    _onFireworkComplete.Raise();
+                }
             }
         }
 

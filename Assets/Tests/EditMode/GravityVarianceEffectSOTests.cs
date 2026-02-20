@@ -23,6 +23,7 @@ namespace HanabiCanvas.Tests.EditMode
             so.FindProperty("_minGravityMultiplier").floatValue = 0.5f;
             so.FindProperty("_maxGravityMultiplier").floatValue = 2.0f;
             so.FindProperty("_baseGravity").floatValue = 3.0f;
+            so.FindProperty("_startDelay").floatValue = 0f;
             so.ApplyModifiedPropertiesWithoutUndo();
         }
 

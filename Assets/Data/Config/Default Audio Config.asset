@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3c0d914897832e4799edd0ac3ca440b, type: 3}
+  m_Name: Default Audio Config
+  m_EditorClassIdentifier: HanabiCanvas.Runtime::HanabiCanvas.Runtime.AudioConfigSO
+  _drawSounds: []
+  _launchSound: {fileID: 0}
+  _burstSound: {fileID: 0}
+  _sparkleLoop: {fileID: 0}
+  _fadeSound: {fileID: 0}
+  _uiClickSound: {fileID: 0}
+  _menuMusic: {fileID: 0}
+  _masterVolume: 1
+  _pitchRange: {x: 0.9, y: 1.1}

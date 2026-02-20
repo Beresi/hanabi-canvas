@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: HanabiCanvas.Runtime::HanabiCanvas.Runtime.Firework.FadeVarianceEffectSO
   _minFadeStart: 0.344
   _maxFadeStart: 0.585
-  _fadeDuration: 0.348
+  _fadeDuration: 0.4
   _fadeCurve:
     serializedVersion: 2
     m_Curve:

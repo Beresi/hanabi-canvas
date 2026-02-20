@@ -60,6 +60,7 @@ namespace HanabiCanvas.Runtime.GameFlow
         private GameState _currentState;
         private bool _hasRequestedFirework;
         private bool _isResettingStarted;
+        private bool _isSessionEnabled = true;
 
         // ---- Properties ----
 
@@ -93,6 +94,11 @@ namespace HanabiCanvas.Runtime.GameFlow
 
         private void Update()
         {
+            if (!_isSessionEnabled)
+            {
+                return;
+            }
+
             switch (_currentState)
             {
                 case GameState.Drawing:
@@ -241,6 +247,51 @@ namespace HanabiCanvas.Runtime.GameFlow
             {
                 _gameState.Value = newState;
             }
+        }
+
+        // ---- Public Methods ----
+
+        /// <summary>
+        /// Enables the session state machine. Called by mode controllers on activation.
+        /// </summary>
+        public void EnableSession()
+        {
+            _isSessionEnabled = true;
+        }
+
+        /// <summary>
+        /// Disables the session state machine. Called by mode controllers on deactivation.
+        /// </summary>
+        public void DisableSession()
+        {
+            _isSessionEnabled = false;
+        }
+
+        /// <summary>
+        /// Resets the session to the Drawing state. Clears internal state,
+        /// transitions camera to canvas view, and raises the canvas clear event.
+        /// </summary>
+        public void ResetSession()
+        {
+            _hasRequestedFirework = false;
+            _isResettingStarted = false;
+
+            if (_onCanvasCleared != null)
+            {
+                _onCanvasCleared.Raise();
+            }
+
+            if (_isCanvasInputEnabled != null)
+            {
+                _isCanvasInputEnabled.Value = true;
+            }
+
+            if (_cameraController != null)
+            {
+                _cameraController.TransitionToCanvasView();
+            }
+
+            TransitionTo(GameState.Drawing);
         }
 
         // ---- Public Methods (Testing) ----

@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Default Gravity Variance Effect
   m_EditorClassIdentifier: HanabiCanvas.Runtime::HanabiCanvas.Runtime.Firework.GravityVarianceEffectSO
   _minGravityMultiplier: 0.5
-  _maxGravityMultiplier: 2
-  _baseGravity: 2
+  _maxGravityMultiplier: 1
+  _baseGravity: 0.1
+  _startDelay: 0.5

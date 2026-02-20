@@ -4,6 +4,7 @@
     "references": [
         "HanabiCanvas.Runtime",
         "Unity.ugui",
+        "Unity.TextMeshPro",
         "Unity.RenderPipelines.Core.Runtime"
     ],
     "includePlatforms": [

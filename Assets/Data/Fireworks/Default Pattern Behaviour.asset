@@ -42,10 +42,10 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _holdDuration: 5
-  _driftSpeed: 0
-  _gravity: 2
-  _fadeDelay: 0.2
-  _fadeDuration: 3
+  _driftSpeed: 0.05
+  _gravity: 1
+  _fadeDelay: 0.5
+  _fadeDuration: 1
   _particleSize: 0.2
   _patternScale: 0.3
   _sizeOverLife:

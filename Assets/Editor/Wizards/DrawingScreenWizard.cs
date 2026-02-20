@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using HanabiCanvas.Runtime;
 using HanabiCanvas.Runtime.Events;
 using HanabiCanvas.Runtime.Firework;
@@ -405,11 +406,10 @@ namespace HanabiCanvas.Editor
             GameObject textObj = new GameObject("Text", typeof(RectTransform));
             textObj.transform.SetParent(buttonObj.transform, false);
 
-            Text text = textObj.AddComponent<Text>();
+            TextMeshProUGUI text = textObj.AddComponent<TextMeshProUGUI>();
             text.text = label;
-            text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             text.fontSize = 18;
-            text.alignment = TextAnchor.MiddleCenter;
+            text.alignment = TextAlignmentOptions.Center;
             text.color = Color.white;
 
             StretchFull(textObj.GetComponent<RectTransform>());

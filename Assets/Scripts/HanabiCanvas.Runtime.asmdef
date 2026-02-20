@@ -2,7 +2,8 @@
     "name": "HanabiCanvas.Runtime",
     "rootNamespace": "HanabiCanvas.Runtime",
     "references": [
-        "Unity.ugui"
+        "Unity.ugui",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
