@@ -183,9 +183,9 @@ namespace HanabiCanvas.Runtime.Firework
                 // Start at origin, burst outward into ring
                 particles[i].Position = request.Position;
 
-                // Radial outward velocity in XY plane
+                // Radial outward velocity, rotated by request orientation
                 float speed = _burstSpeed * Random.Range(1f - _burstSpeedVariance, 1f + _burstSpeedVariance);
-                particles[i].Velocity = new Vector3(cos, sin, 0f) * speed;
+                particles[i].Velocity = request.Rotation * (new Vector3(cos, sin, 0f) * speed);
 
                 // Color from pattern or white
                 particles[i].Color = hasPattern

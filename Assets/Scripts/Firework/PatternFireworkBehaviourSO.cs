@@ -145,10 +145,11 @@ namespace HanabiCanvas.Runtime.Firework
             {
                 PixelEntry pixel = request.Pattern[i];
 
-                // Map grid coordinates to world-space offset from origin
+                // Map grid coordinates to world-space offset, rotated by request orientation
                 float worldX = (pixel.X - halfWidth) * _patternScale;
                 float worldY = (pixel.Y - halfHeight) * _patternScale;
-                Vector3 target = request.Position + new Vector3(worldX, worldY, 0f);
+                Vector3 offset = request.Rotation * new Vector3(worldX, worldY, 0f);
+                Vector3 target = request.Position + offset;
 
                 particles[i].TargetPosition = target;
 

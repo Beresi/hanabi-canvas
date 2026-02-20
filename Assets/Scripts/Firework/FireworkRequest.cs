@@ -22,5 +22,13 @@ namespace HanabiCanvas.Runtime.Firework
 
         /// <summary>Height of the source grid (for world-space mapping).</summary>
         public int PatternHeight;
+
+        /// <summary>
+        /// Orientation of the pattern plane. Behaviours use this to rotate
+        /// particle target positions and velocities so the pattern faces the
+        /// desired direction (typically the camera).
+        /// Defaults to <see cref="Quaternion.identity"/> (XY plane).
+        /// </summary>
+        public Quaternion Rotation;
     }
 }

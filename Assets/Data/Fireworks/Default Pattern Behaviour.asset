@@ -16,7 +16,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0c02caff05b247240ac780b46c5ba963, type: 2}
   - {fileID: 11400000, guid: 6ffa778c3a235c642a19ad96c6bd3c9d, type: 2}
   - {fileID: 11400000, guid: 55848e163aaa6704ebbbc69b399bfb43, type: 2}
-  _convergeSpeed: 5
+  _convergeSpeed: 15
   _formationCurve:
     serializedVersion: 2
     m_Curve:
@@ -46,8 +46,8 @@ MonoBehaviour:
   _gravity: 1
   _fadeDelay: 0.5
   _fadeDuration: 1
-  _particleSize: 0.2
-  _patternScale: 0.3
+  _particleSize: 0.5
+  _patternScale: 0.8
   _sizeOverLife:
     serializedVersion: 2
     m_Curve:

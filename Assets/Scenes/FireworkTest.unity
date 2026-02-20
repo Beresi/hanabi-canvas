@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 2df82b92cfe337f44ab328c6749a746e, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -4366,7 +4366,7 @@ Camera:
   m_GameObject: {fileID: 1190587843}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 1
   m_BackGroundColor: {r: 0.02, g: 0.02, b: 0.08, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -4390,7 +4390,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 73
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -4416,13 +4416,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1190587843}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0.42261827, y: 0, z: 0, w: 0.9063079}
   m_LocalPosition: {x: 0, y: 10, z: -15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -50, y: 0, z: 0}
 --- !u!114 &1190587846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6331,15 +6331,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: HanabiCanvas.Runtime::HanabiCanvas.Runtime.UI.SettingsUI
   _appState: {fileID: 11400000, guid: bfdef4b084ddae94f966971eccd748b3, type: 2}
-  _dataManager: {fileID: 865941769}
   _masterVolume: {fileID: 11400000, guid: d28d4edc96d1d914eb94bccde39d0d1a, type: 2}
-  _onDataChanged: {fileID: 11400000, guid: d8fde5162c4f3cf4880638a302834a7b, type: 2}
-  _exportButton: {fileID: 1846689751}
-  _importButton: {fileID: 441083203}
   _backButton: {fileID: 1057636771}
   _volumeSlider: {fileID: 240201689}
-  _importJsonField: {fileID: 0}
-  _statusText: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

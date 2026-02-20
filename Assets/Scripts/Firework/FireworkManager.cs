@@ -210,6 +210,11 @@ namespace HanabiCanvas.Runtime.Firework
                 return;
             }
 
+            // Orient pattern to face the camera
+            request.Rotation = _camera != null
+                ? _camera.transform.rotation
+                : Quaternion.identity;
+
             int behaviourCount = _behaviours.Length;
 
             // Allocate per-behaviour arrays if needed
