@@ -13,10 +13,13 @@ MonoBehaviour:
   m_Name: Default Rocket Config
   m_EditorClassIdentifier: HanabiCanvas.Runtime::HanabiCanvas.Runtime.RocketConfigSO
   _spawnPositions:
-  - {x: 0, y: -5, z: 0}
+  - {x: -7.99, y: 0, z: 0}
+  - {x: 14.94, y: 0, z: 0}
   _destinationPositions:
-  - {x: 0, y: 10, z: 0}
+  - {x: 0, y: 35, z: 0}
   _pathBehaviours:
+  - {fileID: 11400000, guid: 737cda8a985ae0942a2bfde70bb3f625, type: 2}
+  - {fileID: 11400000, guid: 81808c3f4832bd24c9f3f99458543370, type: 2}
   - {fileID: 11400000, guid: be94eec90920c6a4d9816c7ee24e6859, type: 2}
   _headSize: 1
   _headColor: {r: 1, g: 0.9, b: 0.6, a: 1}
