@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7374370594149398833
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4534638596103970006}
+  - component: {fileID: 5742969968870247924}
+  m_Layer: 0
+  m_Name: DataManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4534638596103970006
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7374370594149398833}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5742969968870247924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7374370594149398833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 352b59d0bd532e34b9e3f07949ea8bc1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: HanabiCanvas.Runtime::HanabiCanvas.Runtime.Persistence.DataManager
+  _onDataChanged: {fileID: 11400000, guid: d8fde5162c4f3cf4880638a302834a7b, type: 2}
+  _artworkCount: {fileID: 11400000, guid: 5a5c953580bc07f45a3775045dbba86b, type: 2}
+  _activeRequestCount: {fileID: 11400000, guid: 43fd58746adb2e64da6a98192b4ee2fb, type: 2}
+  _challengeConfig: {fileID: 11400000, guid: 735d92049e639e14fa6c387406cc3348, type: 2}

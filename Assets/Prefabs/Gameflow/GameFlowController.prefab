@@ -1,0 +1,223 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &512542495046862837
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7281615236818364545}
+  - component: {fileID: 939209467982065779}
+  m_Layer: 0
+  m_Name: SlideshowController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7281615236818364545
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 512542495046862837}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1790262897881291574}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &939209467982065779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 512542495046862837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf0681fe9fd73474fafac31d3e7d0488, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: HanabiCanvas.Runtime::HanabiCanvas.Runtime.Modes.SlideshowController
+  _slideshowConfig: {fileID: 11400000, guid: 41005b1dcf2065449abda5b04b34b0a5, type: 2}
+  _dataManager: {fileID: 0}
+  _fireworkSpawnPoint: {fileID: 0}
+  _onFireworkComplete: {fileID: 11400000, guid: 9466bedde70cf4f4cadd0441fb4acef3, type: 2}
+  _onSlideshowExitRequested: {fileID: 11400000, guid: 20dfe0e761afa7a498cec3736f7e8eaa, type: 2}
+  _onFireworkRequested: {fileID: 11400000, guid: 599eaea6fd365f442b9e519b8a89cb21, type: 2}
+  _onSlideshowStarted: {fileID: 11400000, guid: 53e11d38b9ad8f641bf152d097caff15, type: 2}
+  _onSlideshowArtworkChanged: {fileID: 11400000, guid: df9d6b61571727e4cbd87adfd7147abf, type: 2}
+  _onSlideshowComplete: {fileID: 11400000, guid: 203ebd57093c6fb479f1325d34f8078e, type: 2}
+  _onSlideshowArtworkStarted: {fileID: 11400000, guid: 5c24031e97b30b945915ed88ac3ae6bc, type: 2}
+  _slideshowCurrentIndex: {fileID: 11400000, guid: 013dbd1f2f9b6de49bf79415997877ac, type: 2}
+  _slideshowTotalCount: {fileID: 11400000, guid: 834f82e2e257ace4b906b9ae938d84c2, type: 2}
+  _isRocketEnabled: {fileID: 0}
+  _onRocketLaunchRequested: {fileID: 0}
+--- !u!1 &3586614777200942082
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1790262897881291574}
+  - component: {fileID: 5924997006222855595}
+  m_Layer: 0
+  m_Name: GameFlowController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1790262897881291574
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3586614777200942082}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4263769252519179920}
+  - {fileID: 7019495861720962117}
+  - {fileID: 7281615236818364545}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5924997006222855595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3586614777200942082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c396dc8ea154a954e9df72b749937fc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: HanabiCanvas.Runtime::HanabiCanvas.Runtime.GameFlow.GameFlowController
+  _appState: {fileID: 11400000, guid: bfdef4b084ddae94f966971eccd748b3, type: 2}
+  _freeModeController: {fileID: 5781560988840285725}
+  _challengeModeController: {fileID: 2161643868290256500}
+  _slideshowController: {fileID: 939209467982065779}
+  _isChallengeMode: {fileID: 11400000, guid: f5f7e5a1cf7ff1f4d9e591965017908f, type: 2}
+  _onSlideshowComplete: {fileID: 11400000, guid: 203ebd57093c6fb479f1325d34f8078e, type: 2}
+  _onSlideshowExitRequested: {fileID: 11400000, guid: 20dfe0e761afa7a498cec3736f7e8eaa, type: 2}
+--- !u!1 &4559825764995774417
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7019495861720962117}
+  - component: {fileID: 2161643868290256500}
+  m_Layer: 0
+  m_Name: ChallengeModeController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7019495861720962117
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4559825764995774417}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1790262897881291574}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2161643868290256500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4559825764995774417}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55004ec5da5005843a14621814f1dc3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: HanabiCanvas.Runtime::HanabiCanvas.Runtime.Modes.ChallengeModeController
+  _sessionManager: {fileID: 0}
+  _dataManager: {fileID: 0}
+  _pixelData: {fileID: 11400000, guid: 90a20395269e59c42ac82043c49249cd, type: 2}
+  _canvasConfig: {fileID: 11400000, guid: d063e7f85c717a1499d76ead6f01be11, type: 2}
+  _challengeConfig: {fileID: 11400000, guid: 735d92049e639e14fa6c387406cc3348, type: 2}
+  _isCanvasInputEnabled: {fileID: 11400000, guid: 2cb7eef1e0459ce4090c56fe210c9708, type: 2}
+  _isSymmetryEnabled: {fileID: 11400000, guid: 6c6d05fb279552542a4f6f279d448d84, type: 2}
+  _remainingTime: {fileID: 11400000, guid: c00c06dbc11d3d549a3a2cce503ce0a4, type: 2}
+  _uniqueColorCount: {fileID: 11400000, guid: 21dc11f4eb1f5884183b26ea45e1e988, type: 2}
+  _filledPixelCount: {fileID: 11400000, guid: 9f6ed5379b9f4464981690965aa43edb, type: 2}
+  _onFireworkComplete: {fileID: 11400000, guid: 9466bedde70cf4f4cadd0441fb4acef3, type: 2}
+  _onPixelPainted: {fileID: 11400000, guid: a842e79f4392e9e4eb144bd613682ff7, type: 2}
+  _onConstraintViolated: {fileID: 11400000, guid: 1d25da21937ba6a4086705fe6d2bc628, type: 2}
+  _onCanvasCleared: {fileID: 11400000, guid: 2b423a7b804bd2e4d912a258a2276f23, type: 2}
+--- !u!1 &4754861030226887880
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4263769252519179920}
+  - component: {fileID: 5781560988840285725}
+  m_Layer: 0
+  m_Name: FreeModeController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4263769252519179920
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4754861030226887880}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1790262897881291574}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5781560988840285725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4754861030226887880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bd7c7037aeb6704291dd7281435353b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: HanabiCanvas.Runtime::HanabiCanvas.Runtime.Modes.FreeModeController
+  _sessionManager: {fileID: 0}
+  _dataManager: {fileID: 0}
+  _pixelData: {fileID: 11400000, guid: 90a20395269e59c42ac82043c49249cd, type: 2}
+  _canvasConfig: {fileID: 11400000, guid: d063e7f85c717a1499d76ead6f01be11, type: 2}
+  _isCanvasInputEnabled: {fileID: 11400000, guid: 2cb7eef1e0459ce4090c56fe210c9708, type: 2}
+  _onFireworkComplete: {fileID: 11400000, guid: 9466bedde70cf4f4cadd0441fb4acef3, type: 2}
+  _onCanvasCleared: {fileID: 11400000, guid: 2b423a7b804bd2e4d912a258a2276f23, type: 2}
